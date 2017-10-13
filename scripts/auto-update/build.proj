@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="dir.props" />
+  <UsingTask AssemblyFile="$(TasksBinDir)Microsoft.DotNet.SourceBuild.Tasks.dll" TaskName="ReadGitConfigFile" />
+
+  <Target Name="CreateSourceBuildSubmoduleUpdateSteps"
+          BeforeTargets="CreateDefaultDependencyInfos">
+    <ReadGitConfigFile File="$(ProjectDir).gitmodules">
+      <Output TaskParameter="SubmoduleConfiguration" ItemName="SubmoduleConfiguration" />
+    </ReadGitConfigFile>
+
+    <ItemGroup>
+      <!-- By default, upgrade each submodule with a branch configured in '.gitmodules'. -->
+      <SubmoduleConfiguration>
+        <SourceBuildAutoUpdate Condition="'%(SubmoduleConfiguration.SourceBuildAutoUpdate)' == ''">true</SourceBuildAutoUpdate>
+      </SubmoduleConfiguration>
+
+      <_UpgradableSubmodule Include="@(SubmoduleConfiguration)"
+                            Condition="'%(SubmoduleConfiguration.Branch)' != '' AND
+                                       '%(SubmoduleConfiguration.SourceBuildAutoUpdate)' == 'true'" />
+
+      <_NotTargetSubmodule Include="@(_UpgradableSubmodule)"
+                           Exclude="$(TargetSubmodule)"
+                           Condition="'$(TargetSubmodule)' != ''"/>
+
+      <SubmoduleToUpdate Include="@(_UpgradableSubmodule)"
+                         Exclude="@(_NotTargetSubmodule)" />
+    </ItemGroup>
+
+    <!--
+      Notify the user if TargetSubmodule is invalid, but allow the build to continue if there are no
+      upgradable submodules at all.
+    -->
+    <Error Text="No upgradable submodule '$(TargetSubmodule)' found. Options: @(_UpgradableSubmodule)"
+           Condition="'@(SubmoduleToUpdate)' == '' AND '$(TargetSubmodule)' != ''" />
+
+    <ItemGroup>
+      <UpdateStep Include="@(SubmoduleToUpdate)">
+        <UpdaterType>Submodule from latest</UpdaterType>
+        <Path>$(ProjectDir)%(Path)</Path>
+        <Ref>refs/heads/%(Branch)</Ref>
+        <Repository>%(Url)</Repository>
+      </UpdateStep>
+    </ItemGroup>
+  </Target>
 
   <Import Project="$(ToolsDir)VersionTools.targets" />
 </Project>

@@ -268,4 +268,7 @@ Session.vim
 config.ps1
 **/IISApplications
 
+### Custom source-build ###
 prebuilt/
+msbuild.binlog
+msbuild.ProjectImports.zip

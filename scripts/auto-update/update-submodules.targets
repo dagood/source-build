@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    This file is the interface between /build.proj and /scripts/auto-update/build.proj. The former
+    doesn't normally use BuildTools, so we call MSBuild here to load /scripts/auto-update/build.proj
+    and allow it to import the BuildTools MSBuild files. This brings in the VersionTools targets.
+  -->
   <Target Name="UpdateSubmodules">
-    <MSBuild 
-      Projects="$(MSBuildThisFileDirectory)build.proj"
-      Targets="UpdateDependencies" 
-    />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
+             Targets="UpdateDependencies" />
+  </Target>
+
+  <Target Name="UpdateToRemoteSubmodules">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
+             Targets="UpdateToRemoteDependencies" />
   </Target>
 
   <Target Name="VerifySubmodules">
-    <MSBuild 
-      Projects="$(MSBuildThisFileDirectory)build.proj"
-      Targets="VerifyDependencies" 
-    />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
+             Targets="VerifyDependencies" />
   </Target>
 
   <Target Name="UpdateSubmodulesAndSubmitPullRequest">
-    <MSBuild 
-      Projects="$(MSBuildThisFileDirectory)build.proj"
-      Targets="UpdateDependenciesAndSubmitPullRequest" 
-    />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
+             Targets="UpdateSubmodulesAndSubmitPullRequest" />
   </Target>
 </Project>
