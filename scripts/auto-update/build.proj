@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="dir.props" />
+  <UsingTask AssemblyFile="$(TasksBinDir)Microsoft.DotNet.SourceBuild.Tasks.dll" TaskName="ReadGitModulesFile" />
+
+  <Target Name="CreateLatestCommitUpdateSteps"
+          BeforeTargets="VerifyDependencies;
+                         UpdateDependencies;
+                         UpdateDependenciesAndSubmitPullRequest">
+    <ItemGroup>
+      <SelectedRepository Include="@(Repository)" Condition="'$(UpdateSingleRepo)' == ''" />
+      <SelectedRepository Include="@(Repository)" Condition="'$(UpdateSingleRepo)' != '' AND '%(Repository.Identity)' == '$(UpdateSingleRepo)'" />
+      <SelectedRepository>
+        <GitModulePath>src/%(Identity)</GitModulePath>
+      </SelectedRepository>
+    </ItemGroup>
+
+    <ReadGitModulesFile File="$(ProjectDir).gitmodules"
+                        Repositories="@(SelectedRepository)">
+      <Output TaskParameter="SubmoduleConfiguration" ItemName="SubmoduleConfiguration" />
+      <Output TaskParameter="AugmentedRepositories" ItemName="SelectedRepositoryConfig" />
+    </ReadGitModulesFile>
+
+    <ItemGroup>
+      <RepositoryToUpdate Include="@(SelectedRepositoryConfig)"
+                          Condition="'%(SelectedRepositoryConfig.SkipSubmoduleAutoUpdate)' != 'true' AND
+                                     '%(SelectedRepositoryConfig.Url)' != '' AND
+                                     '%(SelectedRepositoryConfig.Branch)' != '' AND
+                                     '%(SelectedRepositoryConfig.Path)' != ''" />
+
+      <UpdateStep Include="@(RepositoryToUpdate)">
+        <UpdaterType>Submodule from latest</UpdaterType>
+        <Path>$(ProjectDir)%(Path)</Path>
+        <Ref>refs/heads/%(Branch)</Ref>
+        <Repository>%(Url)</Repository>
+      </UpdateStep>
+    </ItemGroup>
+  </Target>
 
   <Import Project="$(ToolsDir)VersionTools.targets" />
 </Project>

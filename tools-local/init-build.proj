@@ -27,6 +27,7 @@
 
   <Target Name="BuildTasks">
     <Exec Command="$(DotNetCliToolDir)dotnet build tasks\Microsoft.DotNet.SourceBuild.Tasks\Microsoft.DotNet.SourceBuild.Tasks.csproj" />
+    <Error />
   </Target>
 
   <Target Name="ApplyPatches">
