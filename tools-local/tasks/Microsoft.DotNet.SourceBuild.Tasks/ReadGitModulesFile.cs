@@ -6,6 +6,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Tasks;
 using Microsoft.Build.Utilities;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.DotNet.Build.Tasks
@@ -98,8 +99,8 @@ namespace Microsoft.DotNet.Build.Tasks
                 string name = sectionAndName.Substring(nameCut + 1);
 
                 int subsectionCut = sectionAndSubsection.LastIndexOf('.');
-                string section = sectionAndName.Substring(0, subsectionCut);
-                string subsection = sectionAndName.Substring(subsectionCut + 1);
+                string section = sectionAndSubsection.Substring(0, subsectionCut);
+                string subsection = sectionAndSubsection.Substring(subsectionCut + 1);
 
                 return new ConfigOption(section, subsection, name, value);
             }

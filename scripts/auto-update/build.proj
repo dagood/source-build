@@ -7,28 +7,22 @@
           BeforeTargets="VerifyDependencies;
                          UpdateDependencies;
                          UpdateDependenciesAndSubmitPullRequest">
-    <ItemGroup>
-      <SelectedRepository Include="@(Repository)" Condition="'$(UpdateSingleRepo)' == ''" />
-      <SelectedRepository Include="@(Repository)" Condition="'$(UpdateSingleRepo)' != '' AND '%(Repository.Identity)' == '$(UpdateSingleRepo)'" />
-      <SelectedRepository>
-        <GitModulePath>src/%(Identity)</GitModulePath>
-      </SelectedRepository>
-    </ItemGroup>
-
-    <ReadGitModulesFile File="$(ProjectDir).gitmodules"
-                        Repositories="@(SelectedRepository)">
+    <ReadGitModulesFile File="$(ProjectDir).gitmodules">
       <Output TaskParameter="SubmoduleConfiguration" ItemName="SubmoduleConfiguration" />
-      <Output TaskParameter="AugmentedRepositories" ItemName="SelectedRepositoryConfig" />
     </ReadGitModulesFile>
 
     <ItemGroup>
-      <RepositoryToUpdate Include="@(SelectedRepositoryConfig)"
-                          Condition="'%(SelectedRepositoryConfig.SkipSubmoduleAutoUpdate)' != 'true' AND
-                                     '%(SelectedRepositoryConfig.Url)' != '' AND
-                                     '%(SelectedRepositoryConfig.Branch)' != '' AND
-                                     '%(SelectedRepositoryConfig.Path)' != ''" />
+      <SubmoduleToUpdate Include="@(SubmoduleConfiguration)" Condition="'%(Branch)' != ''" />
+    </ItemGroup>
 
-      <UpdateStep Include="@(RepositoryToUpdate)">
+    <Message Text="Found submodule to update: '%(SubmoduleToUpdate.Identity)', path: '%(SubmoduleToUpdate.Path)', branch: '%(SubmoduleToUpdate.Branch)', remote url: '%(SubmoduleToUpdate.Url)'"
+             Condition="'@(SubmoduleToUpdate)' != ''"/>
+
+    <Message Text="Found no submodules to update."
+             Condition="'@(SubmoduleToUpdate)' == ''"/>
+
+    <ItemGroup>
+      <UpdateStep Include="@(SubmoduleToUpdate)">
         <UpdaterType>Submodule from latest</UpdaterType>
         <Path>$(ProjectDir)%(Path)</Path>
         <Ref>refs/heads/%(Branch)</Ref>

@@ -10,13 +10,18 @@
              Targets="UpdateDependencies" />
   </Target>
 
+  <Target Name="UpdateToRemoteSubmodules">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
+             Targets="UpdateToRemoteDependencies" />
+  </Target>
+
   <Target Name="VerifySubmodules">
     <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
              Targets="VerifyDependencies" />
   </Target>
 
-  <Target Name="UpdateSubmodulesAndSubmitPullRequest">
+  <Target Name="UpdateToRemoteSubmodulesAndSubmitPullRequest">
     <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
-             Targets="UpdateDependenciesAndSubmitPullRequest" />
+             Targets="UpdateToRemoteDependenciesAndSubmitPullRequest" />
   </Target>
 </Project>
