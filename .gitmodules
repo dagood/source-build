@@ -63,5 +63,5 @@
 	url = https://github.com/aspnet/common
 [submodule "src/sdk"]
 	path = src/sdk
-	url = https://github.com/dotnet/sdk.git
+	url = https://github.com/dotnet/sdk
 	branch = release/2.0.0
