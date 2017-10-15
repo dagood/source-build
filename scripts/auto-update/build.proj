@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="dir.props" />
-  <UsingTask AssemblyFile="$(TasksBinDir)Microsoft.DotNet.SourceBuild.Tasks.dll" TaskName="ReadGitModulesFile" />
+  <UsingTask AssemblyFile="$(TasksBinDir)Microsoft.DotNet.SourceBuild.Tasks.dll" TaskName="ReadGitConfigFile" />
 
   <Target Name="CreateLatestCommitUpdateSteps"
           BeforeTargets="VerifyDependencies;
                          UpdateDependencies;
-                         UpdateDependenciesAndSubmitPullRequest">
-    <ReadGitModulesFile File="$(ProjectDir).gitmodules">
+                         UpdateToRemoteDependencies;
+                         UpdateToRemoteDependenciesAndSubmitPullRequest">
+    <ReadGitConfigFile File="$(ProjectDir).gitmodules">
       <Output TaskParameter="SubmoduleConfiguration" ItemName="SubmoduleConfiguration" />
-    </ReadGitModulesFile>
+    </ReadGitConfigFile>
 
     <ItemGroup>
       <SubmoduleToUpdate Include="@(SubmoduleConfiguration)" Condition="'%(Branch)' != ''" />

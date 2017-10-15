@@ -6,12 +6,11 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Tasks;
 using Microsoft.Build.Utilities;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.DotNet.Build.Tasks
 {
-    public class ReadGitModulesFile : Task
+    public class ReadGitConfigFile : Task
     {
         [Required]
         public string File { get; set; }
