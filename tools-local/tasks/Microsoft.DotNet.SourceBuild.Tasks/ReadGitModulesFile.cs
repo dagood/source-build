@@ -2,18 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
-using NuGet.Packaging;
-using NuGet.Packaging.Core;
+using Microsoft.Build.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.DotNet.Build.Tasks
 {
@@ -23,21 +16,16 @@ namespace Microsoft.DotNet.Build.Tasks
         public string File { get; set; }
 
         /// <summary>
-        /// A list of repositories to specifically fetch configuration for. Metadata is added to
-        /// these items and they are output by AugmentedRepositories.
+        /// An item for each submodule section that has "Path" and "Url" variables. Includes the
+        /// value of "Branch" if present.
         /// 
-        /// The "GitModulePath" metadata on each item is used to associate it to a config entry.
+        /// ItemSpec = subsection (submodule name)
+        /// Path = value of the "path" variable
+        /// Url = value of the "url" variable
+        /// Branch = value of the "branch" variable, or empty string
         /// </summary>
-        public ITaskItem[] Repositories { get; set; }
-
         [Output]
         public ITaskItem[] SubmoduleConfiguration { get; set; }
-
-        [Output]
-        public ITaskItem[] AugmentedRepositories { get; set; }
-
-        private const string __SubmoduleSrcKey = "submodule.";
-        private const string __GitModulePathMetadataName = "GitModulePath";
 
         public override bool Execute()
         {
@@ -52,70 +40,85 @@ namespace Microsoft.DotNet.Build.Tasks
                 return false;
             }
 
-            SubmoduleConfiguration = r.ConsoleOutput
-                .Select(item =>
-                {
-                    string line = item.ItemSpec;
-
-                    // Ignore non-submodule options. In case some misc. git config info is added to
-                    // .gitmodules or this task is pointed at a different file.
-                    if (!line.StartsWith(__SubmoduleSrcKey))
-                    {
-                        return null;
-                    }
-
-                    line = line.Substring(__SubmoduleSrcKey.Length);
-
-                    int keyValueSeparator = line.IndexOf('=');
-                    string key = line.Substring(0, keyValueSeparator);
-                    string value = line.Substring(keyValueSeparator + 1);
-
-                    int lastKeySegmentSeparator = key.LastIndexOf('.');
-                    string submoduleName = key.Substring(0, lastKeySegmentSeparator);
-                    string configKey = key.Substring(lastKeySegmentSeparator + 1);
-
-                    return new
-                    {
-                        ItemSpec = submoduleName,
-                        MetadataName = UppercaseFirstChar(configKey),
-                        MetadataValue = value
-                    };
-                })
-                .Where(i => i != null)
-                .GroupBy(i => i.ItemSpec)
-                .Select(g => new TaskItem(
-                    g.Key,
-                    g.ToDictionary(
-                        i => i.MetadataName,
-                        i => i.MetadataValue)))
+            var options = r.ConsoleOutput
+                .Select(item => ConfigOption.Parse(item.ItemSpec))
                 .ToArray();
 
-            AugmentedRepositories = Repositories
-                .Select(item =>
+            SubmoduleConfiguration = options
+                .Where(o => o.Section == "submodule")
+                .GroupBy(o => o.Subsection)
+                .Select(g =>
                 {
-                    string modulePath = item.GetMetadata(__GitModulePathMetadataName);
+                    string path = g.FirstOrDefault(o => o.Name == "path")?.Value;
+                    string url = g.FirstOrDefault(o => o.Name == "url")?.Value;
 
-                    ITaskItem matchingConfig = SubmoduleConfiguration
-                        .FirstOrDefault(c => c.ItemSpec == modulePath);
-
-                    if (matchingConfig == null)
+                    if (path == null || url == null)
                     {
                         return null;
                     }
 
-                    var mergedItem = new TaskItem(item);
-                    matchingConfig.CopyMetadataTo(mergedItem);
-                    return mergedItem;
+                    string branch = g.FirstOrDefault(o => o.Name == "branch")?.Value ?? string.Empty;
+
+                    return new TaskItem(
+                        g.Key,
+                        new Dictionary<string, string>
+                        {
+                            ["Path"] = path,
+                            ["Url"] = url,
+                            ["Branch"] = branch
+                        });
                 })
-                .Where(item => item != null)
                 .ToArray();
 
             return true;
         }
 
-        private static string UppercaseFirstChar(string s)
+        private class ConfigOption
         {
-            return s.Substring(0, 1).ToUpperInvariant() + s.Substring(1);
+            /// <summary>
+            /// Parse a "git config" line.
+            /// 
+            /// There must be no '=' in the section, subsection, or name.
+            /// There must be no '.' in the section or name.
+            /// </summary>
+            /// <remarks>
+            /// Expected lines look like:
+            ///   "submodule.src/sdk.path=src/sdk",
+            ///   "submodule.src/sdk.url=https://github.com/dotnet/sdk.git",
+            ///   "submodule.src/sdk.branch=release/2.0.0"
+            /// </remarks>
+            public static ConfigOption Parse(string line)
+            {
+                int valueCut = line.IndexOf('=');
+                string sectionAndName = line.Substring(0, valueCut);
+                string value = line.Substring(valueCut + 1);
+
+                int nameCut = sectionAndName.LastIndexOf('.');
+                string sectionAndSubsection = sectionAndName.Substring(0, nameCut);
+                string name = sectionAndName.Substring(nameCut + 1);
+
+                int subsectionCut = sectionAndSubsection.LastIndexOf('.');
+                string section = sectionAndName.Substring(0, subsectionCut);
+                string subsection = sectionAndName.Substring(subsectionCut + 1);
+
+                return new ConfigOption(section, subsection, name, value);
+            }
+
+            public string Section { get; }
+
+            public string Subsection { get; }
+
+            public string Name { get; }
+
+            public string Value { get; }
+
+            public ConfigOption(string section, string subsection, string name, string value)
+            {
+                Section = section;
+                Name = name;
+                Value = value;
+                Subsection = subsection;
+            }
         }
     }
 }
