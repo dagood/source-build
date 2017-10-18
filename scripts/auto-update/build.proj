@@ -4,10 +4,7 @@
   <UsingTask AssemblyFile="$(TasksBinDir)Microsoft.DotNet.SourceBuild.Tasks.dll" TaskName="ReadGitConfigFile" />
 
   <Target Name="CreateLatestCommitUpdateSteps"
-          BeforeTargets="VerifyDependencies;
-                         UpdateDependencies;
-                         UpdateToRemoteDependencies;
-                         UpdateToRemoteDependenciesAndSubmitPullRequest">
+          BeforeTargets="CreateDefaultDependencyInfos">
     <ReadGitConfigFile File="$(ProjectDir).gitmodules">
       <Output TaskParameter="SubmoduleConfiguration" ItemName="SubmoduleConfiguration" />
     </ReadGitConfigFile>
