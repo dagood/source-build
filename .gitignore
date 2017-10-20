@@ -273,6 +273,6 @@ prebuilt/
 msbuild.binlog
 
 # Exists temporarily during build. Interferes with VersionTools'
-# UpdateToRemoteDependencies: if no upgrades are performed, the
+# UpdateDependenciesAndSubmitPullRequest: if no upgrades are performed, the
 # sanity check fails when "git status" shows this file.
 #msbuild.ProjectImports.zip
