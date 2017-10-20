@@ -22,6 +22,6 @@
 
   <Target Name="UpdateSubmodulesAndSubmitPullRequest">
     <MSBuild Projects="$(MSBuildThisFileDirectory)build.proj"
-             Targets="UpdateSubmodulesAndSubmitPullRequest" />
+             Targets="UpdateDependenciesAndSubmitPullRequest" />
   </Target>
 </Project>
