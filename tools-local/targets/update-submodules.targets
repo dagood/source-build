@@ -13,7 +13,7 @@
     </ReadGitConfigFile>
 
     <PropertyGroup>
-      <TargetSubmodule Condition="!$(TargetSubmodule.StartsWith('src'))">src/$(TargetSubmodule)</TargetSubmodule>
+      <TargetSubmodule Condition="'$(TargetSubmodule)' != '' AND !$(TargetSubmodule.StartsWith('src'))">src/$(TargetSubmodule)</TargetSubmodule>
     </PropertyGroup>
 
     <ItemGroup>
