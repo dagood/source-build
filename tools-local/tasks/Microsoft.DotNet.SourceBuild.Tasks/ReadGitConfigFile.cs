@@ -5,6 +5,7 @@
 using Microsoft.Build.Framework;
 using Microsoft.Build.Tasks;
 using Microsoft.Build.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,7 +65,7 @@ namespace Microsoft.DotNet.Build.Tasks
                     // "git --list" converts entries to lowercase, but camelCase is standard
                     // capitalization within the config file.
                     string sourceBuildAutoUpdate = g
-                        .FirstOrDefault(o => o.Name == "sourceBuildAutoUpdate".ToLowerInvariant())
+                        .FirstOrDefault(o => string.Equals(o.Name, "sourceBuildAutoUpdate", StringComparison.OrdinalIgnoreCase))
                         ?.Value ?? string.Empty;
 
                     return new TaskItem(
@@ -77,6 +78,7 @@ namespace Microsoft.DotNet.Build.Tasks
                             ["SourceBuildAutoUpdate"] = sourceBuildAutoUpdate
                         });
                 })
+                .Where(item => item != null)
                 .ToArray();
 
             return true;
