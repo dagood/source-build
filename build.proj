@@ -26,6 +26,6 @@
     <RemoveDir Directories="$(BaseOutputPath)" />
   </Target>
 
-  <Import Project="$(TargetDirectory)update-submodules.targets" />
+  <Import Project="tools-local/update-submodules.targets" />
 
 </Project>
