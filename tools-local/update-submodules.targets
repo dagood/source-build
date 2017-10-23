@@ -18,13 +18,9 @@
 
     <ItemGroup>
       <!-- By default, upgrade each submodule with a branch configured in '.gitmodules'. -->
-      <SubmoduleConfiguration>
-        <SourceBuildAutoUpdate Condition="'%(SubmoduleConfiguration.SourceBuildAutoUpdate)' == ''">true</SourceBuildAutoUpdate>
-      </SubmoduleConfiguration>
-
       <_UpgradableSubmodule Include="@(SubmoduleConfiguration)"
                             Condition="'%(SubmoduleConfiguration.Branch)' != '' AND
-                                       '%(SubmoduleConfiguration.SourceBuildAutoUpdate)' == 'true'" />
+                                       '%(SubmoduleConfiguration.SourceBuildAutoUpdate)' != 'false'" />
 
       <_NotTargetSubmodule Include="@(_UpgradableSubmodule)"
                            Exclude="$(TargetSubmodule)"
