@@ -34,12 +34,6 @@ Exec-Block { & "$SCRIPT_ROOT\init-tools.cmd" } | Out-Host
 $CLIPATH = "$SCRIPT_ROOT\Tools\dotnetcli"
 $SDKPATH = "$CLIPATH\sdk\$SdkVersion"
 
-$BINLOG_ROOT = "$SCRIPT_ROOT\bin\obj\"
-
-if (-not (Test-Path $BINLOG_ROOT)) {
-    New-Item -ItemType Directory $BINLOG_ROOT > $Null
-}
-
 $captured_args = $args
 
-Exec-Block { & "$CLIPATH\dotnet" "$SDKPATH/MSBuild.dll" "$SCRIPT_ROOT/build.proj" /flp:v=diag "/bl:$BINLOG_ROOT/msbuild.binlog" /clp:v=m $captured_args } | Out-Host
+Exec-Block { & "$CLIPATH\dotnet" "$SDKPATH/MSBuild.dll" "$SCRIPT_ROOT/build.proj" /flp:v=diag /bl /clp:v=m $captured_args } | Out-Host
