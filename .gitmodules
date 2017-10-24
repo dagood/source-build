@@ -69,4 +69,4 @@
 	path = src/sdk
 	url = https://github.com/dotnet/sdk
 	branch = release/2.0.0
-	sourceBuildAutoUpdate = false
+	versionToolsAutoUpdate = false
