@@ -62,21 +62,9 @@ phases:
         cp -r . /root/sb/source-build'
     displayName: Clean sb directory and copy source from cloned directory
 
-  # Fetch vsts commits if building internally.
-  - script: |
-      set -x
-      # Ignore failure for the first command. It will intentionally fail if the commit is only
-      # available in VSTS. "submodule update --init" is the simplest way to set up the submodule
-      # directory. ("submodule init" only sets up .git/config, not the e.g. src/coreclr/.git and
-      # .git/modules/src/coreclr/ directories.)
-      $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName) git submodule update --init --recursive
-      $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName) ./fetch-vsts-commits.sh $(user.PAT)
-    displayName: Fetch internal vsts commits
-    condition: and(succeeded(), ne(variables['user.PAT'], ''))
-
-  # Initialize submodules.
-  - script: $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName) git submodule update --init --recursive
-    displayName: Initialize submodules
+  - template: ../steps/init-submodules-sh.yml
+    parameters:
+      commandPrefix: $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName)
 
   # Build source-build.
   - script: |
@@ -89,18 +77,6 @@ phases:
     displayName: Build source-build
     timeoutInMinutes: 90
 
-  # Copy logs to working directory.
-  - script: |
-      set -x
-      $(docker.run) $(docker.logs.map) $(docker.src.map) $(docker.src.work) $(imageName) /bin/bash -c "
-        mkdir -p /logs/source-build/logs
-        find . \( \
-          -iname '*.binlog' -o \
-          -iname '*.log' \) \
-          -exec cp {} --parents /logs/source-build/logs \;"
-    displayName: Copy source-build logs
-    condition: always()
-    continueOnError: true
 
   # Run smoke tests.
   - script: |
@@ -109,15 +85,6 @@ phases:
         /p:Configuration=$(buildConfiguration) \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Run smoke-test
-
-  # Copy smoke test logs to working directory.
-  - script: |
-      $(docker.run) $(docker.logs.map) $(docker.src.map) $(docker.src.work) $(imageName) /bin/bash -c "
-        mkdir -p /logs/source-build/smoke-test
-        find ./testing-smoke -name '*.log' -exec cp {} /logs/source-build/smoke-test \;"
-    displayName: Copy smoke-test logs
-    condition: always()
-    continueOnError: true
 
   # Create tarball.
   - script: |
@@ -168,23 +135,29 @@ phases:
     displayName: Run smoke-test in tarball
     condition: and(succeeded(), eq(variables['buildTarball'], true))
 
-  # Copy all tarball logs to working directory.
+  # Copy logs and reports to staging directory.
+  - script: |
+      set -x
+      $(docker.run) $(docker.logs.map) $(docker.src.map) $(docker.src.work) $(imageName) /bin/bash -c "
+        mkdir -p /logs/source-build/logs
+        find . \( \
+          -path './bin/*-report/*' -o \
+          -iname '*.binlog' -o \
+          -iname '*.log' \) \
+          -exec cp {} --parents /logs/source-build/logs \;"
+    displayName: Copy source-build logs
+    condition: always()
+    continueOnError: true
   - script: |
       set -x
       $(docker.run) $(docker.logs.map) $(docker.tb.map) $(docker.tb.work) $(imageName) /bin/bash -c "
         mkdir -p /logs/tarball/logs
         cd \"$(tarballName)\"
         find . \( \
+          -path './bin/*-report/*' -o \
           -iname '*.binlog' -o \
           -iname '*.log' \) \
-          -exec cp {} --parents /logs/tarball/logs \;
-        # Copy offline prebuilt report
-        mkdir -p /logs/prebuilt-report/offline
-        cp -r ./bin/prebuilt-report/* /logs/prebuilt-report/offline"
-      $(docker.run) $(docker.logs.map) $(docker.src.map) $(docker.src.work) $(imageName) /bin/bash -c "
-        # Copy online prebuilt report
-        mkdir -p /logs/prebuilt-report/online
-        cp -r ./bin/prebuilt-report/* /logs/prebuilt-report/online"
+          -exec cp {} --parents /logs/tarball/logs \;"
     displayName: Copy tarball logs
     condition: eq(variables['buildTarball'], true)
     continueOnError: true
@@ -204,7 +177,7 @@ phases:
     condition: always()
     continueOnError: true
     inputs:
-      PathtoPublish: $(dropDirectory)/logs
+      PathtoPublish: $(Build.ArtifactStagingDirectory)/drop/logs
       ArtifactName: Logs $(artifactName)
       ArtifactType: Container
   - task: PublishBuildArtifacts@1
@@ -212,7 +185,7 @@ phases:
     condition: eq(variables['buildTarball'], true)
     continueOnError: true
     inputs:
-      PathtoPublish: $(dropDirectory)/tarball
+      PathtoPublish: $(Build.ArtifactStagingDirectory)/drop/tarball
       ArtifactName: Tarball $(artifactName)
       ArtifactType: Container
 
