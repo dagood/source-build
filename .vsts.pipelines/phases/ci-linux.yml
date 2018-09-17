@@ -3,6 +3,7 @@ parameters:
   name: ci
   queueDemands: docker
   queueName: DotNetCore-Linux
+  buildOnline: true
   buildTarball: false
   buildTarballOffline: false
   imageName: null
@@ -38,8 +39,9 @@ phases:
     timeoutInMinutes: 240
     parallel: 3
     matrix:
-      online:
-        type: online
+      ${{ if eq(parameters.buildOnline, 'true') }}:
+        online:
+          type: online
       ${{ if eq(parameters.buildTarball, 'true') }}:
         tarball:
           type: tarball
@@ -116,7 +118,7 @@ phases:
   - script: |
       networkArg=
       if [ "$(buildTarballOffline)" = "true" ]; then
-        networkArg="--network='none'"
+        networkArg="--network=none"
       fi
       $(docker.run) $(docker.tb.map) $(docker.tb.work) $networkArg $(imageName) "$(tarballName)/build.sh" \
         /p:Configuration=$(buildConfiguration) \

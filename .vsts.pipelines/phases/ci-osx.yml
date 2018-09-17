@@ -1,7 +1,7 @@
 parameters:
   name: osx
-  queueDemands: Agent.OS -eq darwin
-  queueName: Hosted macOS
+  queueDemands: Agent.OS -eq Darwin
+  queueName: DotNetCore-Mac
 
 phases:
 - phase: ${{ parameters.name }}
