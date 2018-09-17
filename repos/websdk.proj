@@ -12,6 +12,11 @@
   <ItemGroup>
     <EnvironmentVariables Include="WebSdkVersion=$(WebSdkVersion)" />
     <EnvironmentVariables Include="CoreSdkVersion=$(CoreSdkVersion)" />
+    <!-- Ensure VSTS BUILD_BUILDNUMBER isn't picked up by providing a custom build number. -->
+    <EnvironmentVariables Include="PackageBuildNumber=1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <RepositoryReference Include="newtonsoft-json" />
   </ItemGroup>
 
