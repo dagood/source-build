@@ -17,7 +17,7 @@ steps:
     condition: and(succeeded(), ne(variables['user.PAT'], ''))
 
   # Initialize submodules.
-  - script:
+  - script: |
       set -x
       $commandPrefix git submodule update --init --recursive
     displayName: Initialize submodules
