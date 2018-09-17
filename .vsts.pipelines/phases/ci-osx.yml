@@ -8,9 +8,10 @@ phases:
   variables:
     # Prefix to distinguish artifacts from different legs.
     artifactName: ${{ format('$(type)_{0}', parameters.name) }}
-    buildLoggingOptions: ''
     buildConfiguration: Release
+    buildLoggingOptions: ''
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
+    type: online
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
