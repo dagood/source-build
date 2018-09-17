@@ -1,10 +1,10 @@
 phases:
-- template: ../phases/ci-linux.yml
-  parameters:
-    name: centos71
-    imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
-    buildTarball: true
-    buildTarballOffline: true
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     name: centos71
+#     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
+#     buildTarball: true
+#     buildTarballOffline: true
 # - template: ../phases/ci-linux.yml
 #   parameters:
 #     name: fedora28

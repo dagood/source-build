@@ -49,7 +49,7 @@ phases:
         -path './bin/*-report/*' -o \
         -iname '*.binlog' -o \
         -iname '*.log' \) \
-        -exec cp {} --parents "$(logsDirectory)" \;
+        -exec rsync -R {} "$(logsDirectory)" \;
     displayName: Copy logs to staging directory
     condition: always()
     continueOnError: true
