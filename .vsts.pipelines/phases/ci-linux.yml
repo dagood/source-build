@@ -11,7 +11,7 @@ phases:
 - phase: ${{ parameters.name }}
   variables:
     # Prefix to distinguish artifacts from different legs.
-    artifactName: ${{ format('{0}_$(type)', parameters.name }}
+    artifactName: ${{ format('{0}_$(type)', parameters.name) }}
     buildLoggingOptions: ''
     buildConfiguration: Release
     buildTarball: false
