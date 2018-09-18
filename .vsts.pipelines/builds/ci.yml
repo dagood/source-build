@@ -25,9 +25,9 @@ phases:
     name: osx
 - template: ../phases/ci-osx.yml
   parameters:
-    name: osx-hosted
+    name: osx_hosted
     queueName: Hosted macOS
 - template: ../phases/ci-osx.yml
   parameters:
-    name: osx-hosted-internal
+    name: osx_hosted_internal
     queueName: Hosted Mac Internal
