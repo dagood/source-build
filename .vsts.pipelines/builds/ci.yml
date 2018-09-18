@@ -1,11 +1,10 @@
 phases:
-- template: ../phases/ci-linux.yml
-  parameters:
-    name: centos71
-    imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
-    buildOnline: false
-    # buildTarball: true
-    buildTarballOffline: true
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     name: centos71
+#     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
+#     buildTarball: true
+#     buildTarballOffline: true
 # - template: ../phases/ci-linux.yml
 #   parameters:
 #     name: fedora28
@@ -24,3 +23,11 @@ phases:
 - template: ../phases/ci-osx.yml
   parameters:
     name: osx
+- template: ../phases/ci-osx.yml
+  parameters:
+    name: osx-hosted
+    queueName: Hosted macOS
+- template: ../phases/ci-osx.yml
+  parameters:
+    name: osx-hosted-internal
+    queueName: Hosted Mac Internal
