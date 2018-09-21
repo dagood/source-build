@@ -1,0 +1,18 @@
+parameters:
+  buildOnline: true
+  buildTarball: false
+  buildTarballOffline: false
+
+matrix:
+  ${{ if eq(parameters.buildOnline, 'true') }}:
+    online:
+      type: online
+  ${{ if eq(parameters.buildTarball, 'true') }}:
+    tarball:
+      type: tarball
+      buildTarball: true
+  ${{ if eq(parameters.buildTarballOffline, 'true') }}:
+    tarball_offline:
+      type: tarball_offline
+      buildTarball: true
+      buildTarballOffline: true

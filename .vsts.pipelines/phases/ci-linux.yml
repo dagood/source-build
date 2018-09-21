@@ -39,18 +39,11 @@ phases:
     timeoutInMinutes: 240
     parallel: 3
     matrix:
-      ${{ if eq(parameters.buildOnline, 'true') }}:
-        online:
-          type: online
-      ${{ if eq(parameters.buildTarball, 'true') }}:
-        tarball:
-          type: tarball
-          buildTarball: true
-      ${{ if eq(parameters.buildTarballOffline, 'true') }}:
-        tarball_offline:
-          type: tarball_offline
-          buildTarball: true
-          buildTarballOffline: true
+      - template: ../matrices/matrix-test.yml
+        parameters:
+          buildOnline: true
+          buildTarball: false
+          buildTarballOffline: false
 
   steps:
   - template: ../steps/docker-cleanup-linux.yml
