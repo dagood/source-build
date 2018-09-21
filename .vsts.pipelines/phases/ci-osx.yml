@@ -21,6 +21,12 @@ phases:
     clean: true
 
   - script: |
+      ./clean.sh -a
+      # Make sure submodules from other branches are removed: pass extra f.
+      git clean -xdff
+    displayName: Clean
+
+  - script: |
       ( set -o posix; set )
     displayName: Print all variables in environment
 
