@@ -1,11 +1,12 @@
 parameters:
-  matrix: null
   name: ci
   queueDemands: docker
   queueName: DotNetCore-Linux
+  buildTypes: 
   buildOnline: true
   buildTarball: false
   buildTarballOffline: false
+  buildConfiguration: Release
   imageName: null
 
 phases:
@@ -14,7 +15,7 @@ phases:
     # Prefix to distinguish artifacts from different legs.
     artifactName: ${{ format('$(type)_{0}', parameters.name) }}
     buildLoggingOptions: ''
-    buildConfiguration: Release
+    buildConfiguration: ${{ parameters.buildConfiguration }}
     buildTarball: false
     buildTarballOffline: false
     # Use ":z" to set selinux flag for sharing in build-owned root dir. https://docs.docker.com/storage/bind-mounts/#configure-the-selinux-label
@@ -39,11 +40,33 @@ phases:
     timeoutInMinutes: 240
     parallel: 3
     matrix:
-      - template: ../matrices/matrix-test.yml
-        parameters:
-          buildOnline: true
-          buildTarball: false
-          buildTarballOffline: false
+      ${{ if eq(parameters.buildOnline, 'true') }}:
+        online:
+          type: release_online
+      ${{ if eq(parameters.buildTarball, 'true') }}:
+        tarball:
+          type: release_tarball
+          buildTarball: true
+      ${{ if eq(parameters.buildTarballOffline, 'true') }}:
+        tarball_offline:
+          type: release_tarball_offline
+          buildTarball: true
+          buildTarballOffline: true
+      ${{ if eq(parameters.buildOnline, 'true') }}:
+        online:
+          type: debug_online
+          buildConfiguration: Debug
+      ${{ if eq(parameters.buildTarball, 'true') }}:
+        tarball:
+          type: debug_tarball
+          buildTarball: true
+          buildConfiguration: Debug
+      ${{ if eq(parameters.buildTarballOffline, 'true') }}:
+        tarball_offline:
+          type: debug_tarball_offline
+          buildTarball: true
+          buildTarballOffline: true
+          buildConfiguration: Debug
 
   steps:
   - template: ../steps/docker-cleanup-linux.yml
@@ -71,7 +94,6 @@ phases:
         $(buildLoggingOptions)
     displayName: Build source-build
     timeoutInMinutes: 90
-
 
   # Run smoke tests.
   - script: |
