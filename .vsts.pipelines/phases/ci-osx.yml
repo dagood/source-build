@@ -11,6 +11,7 @@ phases:
     azdo.buildConfiguration: Release
     azdo.type: online
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
+    SOURCE_BUILD_SKIP_SUBMODULE_CHECK: true
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
