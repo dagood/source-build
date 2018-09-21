@@ -7,11 +7,10 @@ phases:
 - phase: ${{ parameters.name }}
   variables:
     # Prefix to distinguish artifacts from different legs.
-    artifactName: ${{ format('$(type)_{0}', parameters.name) }}
-    buildConfiguration: Release
-    buildLoggingOptions: ''
+    artifactName: ${{ format('$(azdo.type)_{0}', parameters.name) }}
+    azdo.buildConfiguration: Release
+    azdo.type: online
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
-    type: online
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
@@ -30,9 +29,8 @@ phases:
   # Build source-build.
   - script: |
       ./build.sh \
-        /p:Configuration=$(buildConfiguration) \
-        /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix) \
-        $(buildLoggingOptions)
+        /p:Configuration=$(azdo.buildConfiguration) \
+        /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Build source-build
     timeoutInMinutes: 90
 
@@ -40,7 +38,7 @@ phases:
   - script: |
       ./build.sh \
         /t:RunSmokeTest \
-        /p:Configuration=$(buildConfiguration) \
+        /p:Configuration=$(azdo.buildConfiguration) \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Run smoke-test
 
