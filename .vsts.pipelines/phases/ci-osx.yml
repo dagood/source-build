@@ -21,6 +21,10 @@ phases:
   - checkout: self
     clean: true
 
+  - script: |
+      ( set -o posix; set )
+    displayName: Print all variables in environment
+
   - template: ../steps/init-submodules-sh.yml
 
   # Build source-build.
