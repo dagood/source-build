@@ -1,5 +1,6 @@
 parameters:
   imageName: null
+  matrix: {}
   phase: null
   queueDemands: docker
   queueName: DotNetCore-Linux
@@ -31,6 +32,7 @@ phases:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
     timeoutInMinutes: 240
+    matrix: ${{ parameters.matrix }}
 
   steps:
   - template: ../steps/docker-cleanup-linux.yml
