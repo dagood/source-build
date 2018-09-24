@@ -40,6 +40,7 @@ phases:
 
   # Build source-build.
   - script: |
+      set -x
       ./build.sh \
         /p:Configuration=$(sb.configuration) \
         /p:PortableBuild=$(sb.portable) \
@@ -50,6 +51,7 @@ phases:
 
   # Run smoke tests.
   - script: |
+      set -x
       ./build.sh \
         /t:RunSmokeTest \
         /p:Configuration=$(sb.configuration) \
