@@ -9,7 +9,7 @@ phases:
 - phase: ${{ parameters.name }}
   variables:
     # Prefix to distinguish artifacts from different legs.
-    artifactName: ${{ format('$(sb.type)_{0}', parameters.name) }}
+    artifactName: ${{ format('$(type)_{0}', parameters.name) }}
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
     SOURCE_BUILD_SKIP_SUBMODULE_CHECK: true
     type: ${{ parameters.type }}
@@ -43,7 +43,7 @@ phases:
       ./build.sh \
         /p:Configuration=$(sb.configuration) \
         /p:PortableBuild=$(sb.portable) \
-        /p:FailOnPrebuiltBaselineError=$failOnBaselineError \
+        /p:FailOnPrebuiltBaselineError=true \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Build source-build
     timeoutInMinutes: 90
