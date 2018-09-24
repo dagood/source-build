@@ -1,14 +1,14 @@
 phases:
-- template: ../phases/ci-linux.yml
-  parameters:
-    phase: centos71
-    imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
-    matrix:
-      Online: {}
-      Tarball: { type: Tarball }
-      # Tarball Portable: { type: Tarball Portable }
-      # Offline: { type: Offline }
-      Offline Portable: { type: Offline Portable }
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     phase: centos71
+#     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
+#     matrix:
+#       Online: {}
+#       Tarball: { type: Tarball }
+#       Tarball Portable: { type: Tarball Portable }
+#       Offline: { type: Offline }
+#       Offline Portable: { type: Offline Portable }
 # - template: ../phases/ci-linux.yml
 #   parameters:
 #     phase: fedora28
