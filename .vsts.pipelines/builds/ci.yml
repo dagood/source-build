@@ -4,7 +4,7 @@ phases:
     phase: centos71
     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
     matrix:
-      Online:
+      Online: {}
       Tarball: { type: Tarball }
       # Tarball Portable: { type: Tarball Portable }
       # Offline: { type: Offline }
