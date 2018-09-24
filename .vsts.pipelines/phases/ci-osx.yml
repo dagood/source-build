@@ -2,16 +2,16 @@ parameters:
   name: osx
   queueDemands: Agent.OS -eq Darwin
   queueName: DotNetCore-Mac
+  type: Online
 
 phases:
 - phase: ${{ parameters.name }}
   variables:
     # Prefix to distinguish artifacts from different legs.
-    artifactName: ${{ format('$(azdo.type)_{0}', parameters.name) }}
-    azdo.buildConfiguration: Release
-    azdo.type: online
+    artifactName: ${{ format('$(sb.type)_{0}', parameters.name) }}
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
     SOURCE_BUILD_SKIP_SUBMODULE_CHECK: true
+    type: ${{ parameters.type }}
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
@@ -27,6 +27,8 @@ phases:
       git clean -xdff
     displayName: Clean
 
+  - template: ../steps/calculate-config-flags-linux.yml
+
   - script: |
       ( set -o posix; set )
     displayName: Print all variables in environment
@@ -36,7 +38,9 @@ phases:
   # Build source-build.
   - script: |
       ./build.sh \
-        /p:Configuration=$(azdo.buildConfiguration) \
+        /p:Configuration=$(sb.buildConfiguration) \
+        /p:PortableBuild=$(sb.portable) \
+        /p:FailOnPrebuiltBaselineError=$failOnBaselineError \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Build source-build
     timeoutInMinutes: 90
@@ -45,7 +49,7 @@ phases:
   - script: |
       ./build.sh \
         /t:RunSmokeTest \
-        /p:Configuration=$(azdo.buildConfiguration) \
+        /p:Configuration=$(sb.buildConfiguration) \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Run smoke-test
 

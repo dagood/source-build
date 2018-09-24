@@ -1,23 +1,14 @@
 parameters:
-  name: ci
+  imageName: null
+  phase: null
   queueDemands: docker
   queueName: DotNetCore-Linux
-  buildTypes: 
-  buildOnline: true
-  buildTarball: false
-  buildTarballOffline: false
-  buildConfiguration: Release
-  imageName: null
+  type: Online
 
-phases:
-- phase: ${{ parameters.name }}
+- phase: ${{ parameters.phase }}
   variables:
     # Prefix to distinguish artifacts from different legs.
     artifactName: ${{ format('$(type)_{0}', parameters.name) }}
-    buildLoggingOptions: ''
-    buildConfiguration: ${{ parameters.buildConfiguration }}
-    buildTarball: false
-    buildTarballOffline: false
     # Use ":z" to set selinux flag for sharing in build-owned root dir. https://docs.docker.com/storage/bind-mounts/#configure-the-selinux-label
     docker.agentSrc.map: -v $(Build.SourcesDirectory):/agentSrc:z
     docker.agentSrc.work: -w /agentSrc
@@ -34,42 +25,15 @@ phases:
     rootDirectory: $(Build.SourcesDirectory)/..
     stagingDirectory: $(rootDirectory)/sb/staging
     tarballName: tarball_$(Build.BuildId)
+    type: ${{ parameters.type }}
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
     timeoutInMinutes: 240
-    parallel: 3
-    matrix:
-      ${{ if eq(parameters.buildOnline, 'true') }}:
-        online:
-          type: release_online
-      ${{ if eq(parameters.buildTarball, 'true') }}:
-        tarball:
-          type: release_tarball
-          buildTarball: true
-      ${{ if eq(parameters.buildTarballOffline, 'true') }}:
-        tarball_offline:
-          type: release_tarball_offline
-          buildTarball: true
-          buildTarballOffline: true
-      ${{ if eq(parameters.buildOnline, 'true') }}:
-        online:
-          type: debug_online
-          buildConfiguration: Debug
-      ${{ if eq(parameters.buildTarball, 'true') }}:
-        tarball:
-          type: debug_tarball
-          buildTarball: true
-          buildConfiguration: Debug
-      ${{ if eq(parameters.buildTarballOffline, 'true') }}:
-        tarball_offline:
-          type: debug_tarball_offline
-          buildTarball: true
-          buildTarballOffline: true
-          buildConfiguration: Debug
 
   steps:
   - template: ../steps/docker-cleanup-linux.yml
+  - template: ../steps/calculate-config-flags-linux.yml
 
   # Create working directory and copy source into it.
   - script: |
@@ -86,12 +50,15 @@ phases:
 
   # Build source-build.
   - script: |
+      if [ "$(sb.tarball)" != "true" ]; then
+        failOnBaselineError=true
+      fi
       $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName) ./build.sh \
-        /p:Configuration=$(buildConfiguration) \
-        /p:ArchiveDownloadedPackages=$(buildTarball) \
-        /p:ContinueOnPrebuiltBaselineError=$(buildTarball) \
-        /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix) \
-        $(buildLoggingOptions)
+        /p:Configuration=$(sb.configuration) \
+        /p:PortableBuild=$(sb.portable) \
+        /p:ArchiveDownloadedPackages=$(sb.tarball) \
+        /p:FailOnPrebuiltBaselineError=$failOnBaselineError \
+        /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Build source-build
     timeoutInMinutes: 90
 
@@ -99,7 +66,7 @@ phases:
   - script: |
       $(docker.run) $(docker.src.map) $(docker.src.work) $(imageName) ./build.sh \
         /t:RunSmokeTest \
-        /p:Configuration=$(buildConfiguration) \
+        /p:Configuration=$(sb.configuration) \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Run smoke-test
 
@@ -109,7 +76,7 @@ phases:
         "/tb/$(tarballName)" \
         --skip-build
     displayName: Create tarball
-    condition: and(succeeded(), eq(variables['buildTarball'], true))
+    condition: and(succeeded(), eq(variables['sb.tarball'], true))
 
   # tar the tarball directory into the drop directory.
   - script: |
@@ -127,30 +94,31 @@ phases:
         tar --numeric-owner "--exclude=$smokeTestPackages" -zcf "/drop/tarball/$(tarballName).tar.gz" "$(tarballName)"
         tar --numeric-owner -zcf "/drop/tarball/$(tarballName)-smoke-test-prereqs.tar.gz" "$smokeTestPackages"'
     displayName: Copy tarball to output
-    condition: and(succeeded(), eq(variables['buildTarball'], true))
+    condition: and(succeeded(), eq(variables['sb.tarball'], true))
 
   # Build tarball.
   - script: |
       networkArg=
-      if [ "$(buildTarballOffline)" = "true" ]; then
+      if [ "$(sb.tarballOffline)" = "true" ]; then
         networkArg="--network=none"
       fi
       $(docker.run) $(docker.tb.map) $(docker.tb.work) $networkArg $(imageName) "$(tarballName)/build.sh" \
-        /p:Configuration=$(buildConfiguration) \
-        $(buildLoggingOptions)
+        /p:Configuration=$(sb.configuration) \
+        /p:PortableBuild=$(sb.portable) \
+        /p:FailOnPrebuiltBaselineError=true
     displayName: Build tarball
     timeoutInMinutes: 90
-    condition: and(succeeded(), eq(variables['buildTarball'], true))
+    condition: and(succeeded(), eq(variables['sb.tarball'], true))
 
   # Run smoke tests.
   - script: |
       $(docker.run) $(docker.tb.map) $(docker.tb.work) $(imageName) "$(tarballName)/smoke-test.sh" \
         --minimal \
         --projectOutput \
-        --configuration $(buildConfiguration) \
+        --configuration $(sb.configuration) \
         --prodConBlobFeedUrl ''
     displayName: Run smoke-test in tarball
-    condition: and(succeeded(), eq(variables['buildTarball'], true))
+    condition: and(succeeded(), eq(variables['sb.tarball'], true))
 
   # Copy logs and reports to staging directory.
   - script: |
@@ -176,7 +144,7 @@ phases:
           -iname '*.log' \) \
           -exec cp {} --parents /logs/tarball/logs \;"
     displayName: Copy tarball logs
-    condition: eq(variables['buildTarball'], true)
+    condition: eq(variables['sb.tarball'], true)
     continueOnError: true
 
   # Copy artifacts to staging - Copy to VSTS owned folder is done outside of docker so copied files
@@ -199,7 +167,7 @@ phases:
       ArtifactType: Container
   - task: PublishBuildArtifacts@1
     displayName: Publish Tarball artifact
-    condition: eq(variables['buildTarball'], true)
+    condition: eq(variables['sb.tarball'], true)
     continueOnError: true
     inputs:
       PathtoPublish: $(Build.ArtifactStagingDirectory)/drop/tarball
