@@ -32,7 +32,8 @@ phases:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
     timeoutInMinutes: 240
-    matrix: ${{ parameters.matrix }}
+    matrix:
+      ${{ parameters.matrix }}
 
   steps:
   - template: ../steps/docker-cleanup-linux.yml
