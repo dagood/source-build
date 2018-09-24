@@ -5,6 +5,7 @@ parameters:
   queueName: DotNetCore-Linux
   type: Online
 
+phases:
 - phase: ${{ parameters.phase }}
   variables:
     # Prefix to distinguish artifacts from different legs.
