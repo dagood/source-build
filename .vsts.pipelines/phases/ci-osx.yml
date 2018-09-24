@@ -41,7 +41,7 @@ phases:
   # Build source-build.
   - script: |
       ./build.sh \
-        /p:Configuration=$(sb.buildConfiguration) \
+        /p:Configuration=$(sb.configuration) \
         /p:PortableBuild=$(sb.portable) \
         /p:FailOnPrebuiltBaselineError=$failOnBaselineError \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
@@ -52,7 +52,7 @@ phases:
   - script: |
       ./build.sh \
         /t:RunSmokeTest \
-        /p:Configuration=$(sb.buildConfiguration) \
+        /p:Configuration=$(sb.configuration) \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Run smoke-test
 

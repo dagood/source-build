@@ -32,6 +32,7 @@ phases:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
     timeoutInMinutes: 240
+    parallel: 8
     matrix:
       ${{ insert }}: ${{ parameters.matrix }}
 
