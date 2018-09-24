@@ -14,7 +14,7 @@ steps:
 
     echo "Setting up configuration variables for CI type '$TYPE'"
 
-    for $x in $TYPE; do
+    for x in $TYPE; do
       case $x in
         Debug|Release)
           setvariable sb.configuration $x
