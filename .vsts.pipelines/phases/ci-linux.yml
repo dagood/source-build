@@ -4,7 +4,7 @@ parameters:
   phase: null
   queueDemands: docker
   queueName: DotNetCore-Linux
-  type: Online
+  type: Production
 
 phases:
 - phase: ${{ parameters.phase }}

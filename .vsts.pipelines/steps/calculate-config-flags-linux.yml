@@ -24,7 +24,7 @@ steps:
           setvariable sb.portable true
           ;;
 
-        Tarball)
+        Online)
           setvariable sb.tarball true
           ;;
         Offline)
