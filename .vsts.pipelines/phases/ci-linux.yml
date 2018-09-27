@@ -2,8 +2,8 @@ parameters:
   imageName: null
   matrix: {}
   phase: null
-  queueDemands: docker
-  queueName: DotNetCore-Linux
+  queueDemands: ''
+  queueName: Hosted Linux Preview
   type: Production
 
 phases:
