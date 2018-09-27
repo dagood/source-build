@@ -2,8 +2,8 @@ parameters:
   imageName: null
   matrix: {}
   phase: null
-  queueDemands: ''
-  queueName: Hosted Linux Preview
+  queueDemands: docker
+  queueName: dnceng-linux-external-temp
   type: Production
 
 phases:
