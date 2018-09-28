@@ -9,9 +9,9 @@ phases:
     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
     matrix:
       Production: {}
-#       Online: { type: Online }
+      Online: { type: Online }
 #       Online Portable: { type: Online Portable }
-#       Offline: { type: Offline }
+      Offline: { type: Offline }
 #       Offline Portable: { type: Offline Portable }
 # - template: ../phases/ci-linux.yml
 #   parameters:
