@@ -40,6 +40,10 @@ phases:
   - template: ../steps/docker-cleanup-linux.yml
   - template: ../steps/calculate-config-flags-linux.yml
 
+  - script: df -h
+    displayName: Check space (df -h)
+    continueOnError: true
+
   # Create working directory and copy source into it.
   - script: |
       set -x
@@ -188,3 +192,8 @@ phases:
     continueOnError: true
 
   - template: ../steps/docker-cleanup-linux.yml
+
+  - script: df -h
+    displayName: Check space (df -h)
+    condition: always()
+    continueOnError: true
