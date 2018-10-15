@@ -3,6 +3,7 @@ From: Davis Goodin <dagood@microsoft.com>
 Date: Fri, 21 Sep 2018 13:17:43 -0500
 Subject: [PATCH] Don't check for libintl.h on Darwin (OSX)
 
+https://github.com/dotnet/coreclr/issues/20092 will allow patch removal.
 ---
  src/pal/src/configure.cmake | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
