@@ -1,7 +1,7 @@
 parameters:
   matrix: {}
   name: osx
-  queueDemands: Agent.OS -eq Darwin
+  queueDemands: Agent.OS -equals Darwin
   queueName: DotNetCore-Mac
   type: Online
 
