@@ -2,7 +2,8 @@ parameters:
   imageName: null
   matrix: {}
   phase: null
-  queueName: Hosted Ubuntu 1604
+  queueDemands: docker
+  queueName: dnceng-linux-external-temp
   type: Production
 
 phases:
@@ -29,6 +30,7 @@ phases:
     type: ${{ parameters.type }}
   queue:
     name: ${{ parameters.queueName }}
+    demands: ${{ parameters.queueDemands }}
     timeoutInMinutes: 270
     parallel: 8
     matrix:
