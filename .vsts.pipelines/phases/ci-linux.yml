@@ -31,7 +31,7 @@ phases:
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
-    timeoutInMinutes: 240
+    timeoutInMinutes: 270
     parallel: 8
     matrix:
       ${{ insert }}: ${{ parameters.matrix }}
@@ -68,7 +68,7 @@ phases:
         /p:FailOnPrebuiltBaselineError=$failOnBaselineError \
         /p:ProdConBlobFeedUrlPrefix=$(prodConBlobFeedUrlPrefix)
     displayName: Build source-build
-    timeoutInMinutes: 90
+    timeoutInMinutes: 120
 
   # Run smoke tests.
   - script: |
@@ -121,7 +121,7 @@ phases:
         /p:PortableBuild=$(sb.portable) \
         /p:FailOnPrebuiltBaselineError=true
     displayName: Build tarball
-    timeoutInMinutes: 90
+    timeoutInMinutes: 120
     condition: and(succeeded(), eq(variables['sb.tarball'], true))
 
   # Run smoke tests.
