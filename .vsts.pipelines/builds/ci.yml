@@ -1,7 +1,9 @@
 # Matrix build types:
-#   Production: The online build that (unless not supported) creates a tarball.
+#   Production: Only runs the build, not a tarball build. Called "production" because it's the part
+#     used to produce tarballs. Some platforms might not be capable of producing a tarball yet: we
+#     still call this type of build "production" for consistency.
 #   Online: The leg produces a tarball then builds it while connected to the internet.
-#   Offline: The leg produces a tarball then builds it offline: network disconnected using Docker.
+#   Offline: The leg produces a tarball then builds it offline. Network disconnected using Docker.
 phases:
 - template: ../phases/ci-linux.yml
   parameters:
@@ -10,32 +12,32 @@ phases:
     matrix:
       Production: {}
       Online: { type: Online }
-#       Online Portable: { type: Online Portable }
+      Online Portable: { type: Online Portable }
       Offline: { type: Offline }
-#       Offline Portable: { type: Offline Portable }
-# - template: ../phases/ci-linux.yml
-#   parameters:
-#     phase: fedora28
-#     imageName: microsoft/dotnet-buildtools-prereqs:fedora-28-c103199-20180628122443
-#     matrix:
-#       Production: {}
-#       Online: { type: Online }
-#       Online Portable: { type: Online Portable }
-#       Offline: { type: Offline }
-#       Offline Portable: { type: Offline Portable }
-# - template: ../phases/ci-linux.yml
-#   parameters:
-#     phase: debian82
-#     imageName: microsoft/dotnet-buildtools-prereqs:debian-8.2-c103199-20180628122423
-#     matrix:
-#       Production: {}
-#       Online: { type: Online }
-#       Offline: { type: Offline }
-# - template: ../phases/ci-linux.yml
-#   parameters:
-#     phase: ubuntu1604
-#     imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
+      Offline Portable: { type: Offline Portable }
+- template: ../phases/ci-linux.yml
+  parameters:
+    phase: fedora28
+    imageName: microsoft/dotnet-buildtools-prereqs:fedora-28-c103199-20180628122443
+    matrix:
+      Production: {}
+      Online: { type: Online }
+      Online Portable: { type: Online Portable }
+      Offline: { type: Offline }
+      Offline Portable: { type: Offline Portable }
+- template: ../phases/ci-linux.yml
+  parameters:
+    phase: debian82
+    imageName: microsoft/dotnet-buildtools-prereqs:debian-8.2-c103199-20180628122423
+    matrix:
+      Production: {}
+      Online: { type: Online }
+      Offline: { type: Offline }
+- template: ../phases/ci-linux.yml
+  parameters:
+    phase: ubuntu1604
+    imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
 
-# - template: ../phases/ci-osx.yml
-#   parameters:
-#     phase: osx
+- template: ../phases/ci-osx.yml
+  parameters:
+    phase: osx
