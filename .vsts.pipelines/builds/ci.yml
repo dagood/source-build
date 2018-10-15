@@ -25,14 +25,14 @@ phases:
       Online Portable: { type: Online Portable }
       Offline: { type: Offline }
       Offline Portable: { type: Offline Portable }
-- template: ../phases/ci-linux.yml
-  parameters:
-    phase: debian82
-    imageName: microsoft/dotnet-buildtools-prereqs:debian-8.2-c103199-20180628122423
-    matrix:
-      Production: {}
-      Online: { type: Online }
-      Offline: { type: Offline }
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     phase: debian82
+#     imageName: microsoft/dotnet-buildtools-prereqs:debian-8.2-c103199-20180628122423
+#     matrix:
+#       Production: {}
+#       Online: { type: Online }
+#       Offline: { type: Offline }
 - template: ../phases/ci-linux.yml
   parameters:
     phase: ubuntu1604
