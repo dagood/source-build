@@ -45,5 +45,3 @@ phases:
     imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
 
 - template: ../phases/ci-osx.yml
-  parameters:
-    phase: osx

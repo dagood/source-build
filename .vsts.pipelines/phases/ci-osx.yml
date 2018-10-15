@@ -1,18 +1,19 @@
 parameters:
-  matrix: {}
-  name: osx
+  matrix:
+    Production: {}
+  phase: osx
   queueDemands: Agent.OS -equals Darwin
   queueName: DotNetCore-Mac
-  type: Online
 
 phases:
-- phase: ${{ parameters.name }}
+- phase: ${{ parameters.phase }}
   variables:
     # Prefix to distinguish artifacts from different legs.
     artifactName: ${{ format('$(type)_{0}', parameters.phase) }}
     logsDirectory: $(Build.ArtifactStagingDirectory)/logs
     SOURCE_BUILD_SKIP_SUBMODULE_CHECK: true
-    type: ${{ parameters.type }}
+    # Default type, can be overridden by matrix legs.
+    type: Production
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
