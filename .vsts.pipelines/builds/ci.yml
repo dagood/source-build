@@ -4,6 +4,7 @@
 #     still call this type of build "production" for consistency.
 #   Online: The leg produces a tarball then builds it while connected to the internet.
 #   Offline: The leg produces a tarball then builds it offline. Network disconnected using Docker.
+
 phases:
 - template: ../phases/ci-linux.yml
   parameters:
@@ -15,16 +16,20 @@ phases:
       Online Portable: { type: Online Portable }
       Offline: { type: Offline }
       Offline Portable: { type: Offline Portable }
-- template: ../phases/ci-linux.yml
-  parameters:
-    phase: fedora28
-    imageName: microsoft/dotnet-buildtools-prereqs:fedora-28-c103199-20180628122443
-    matrix:
-      Production: {}
-      Online: { type: Online }
-      Online Portable: { type: Online Portable }
-      Offline: { type: Offline }
-      Offline Portable: { type: Offline Portable }
+
+# Disabled: The docker image doesn't have pkill and hangs during smoke-test.
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     phase: fedora28
+#     imageName: microsoft/dotnet-buildtools-prereqs:fedora-28-c103199-20180628122443
+#     matrix:
+#       Production: {}
+#       Online: { type: Online }
+#       Online Portable: { type: Online Portable }
+#       Offline: { type: Offline }
+#       Offline Portable: { type: Offline Portable }
+
+# Disabled: CoreFX native build can't find libgssapi_krb5, suggests installing libkrb5-dev
 # - template: ../phases/ci-linux.yml
 #   parameters:
 #     phase: debian82
@@ -33,6 +38,7 @@ phases:
 #       Production: {}
 #       Online: { type: Online }
 #       Offline: { type: Offline }
+
 - template: ../phases/ci-linux.yml
   parameters:
     phase: ubuntu1604

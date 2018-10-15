@@ -1,10 +1,10 @@
 parameters:
   imageName: null
-  matrix: {}
+  matrix:
+    Production: {}
   phase: null
   queueDemands: docker
   queueName: dnceng-linux-external-temp
-  type: Production
 
 phases:
 - phase: ${{ parameters.phase }}
@@ -27,7 +27,8 @@ phases:
     rootDirectory: $(Build.SourcesDirectory)/..
     stagingDirectory: $(rootDirectory)/sb/staging
     tarballName: tarball_$(Build.BuildId)
-    type: ${{ parameters.type }}
+    # Default type, can be overridden by matrix legs.
+    type: Production
   queue:
     name: ${{ parameters.queueName }}
     demands: ${{ parameters.queueDemands }}
