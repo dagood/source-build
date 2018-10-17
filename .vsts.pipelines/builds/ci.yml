@@ -6,16 +6,16 @@
 #   Offline: The leg produces a tarball then builds it offline. Network disconnected using Docker.
 
 phases:
-- template: ../phases/ci-linux.yml
-  parameters:
-    phase: centos71
-    imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
-    matrix:
-      Production: {}
-      Online: { type: Online }
-      Online Portable: { type: Online Portable }
-      Offline: { type: Offline }
-      Offline Portable: { type: Offline Portable }
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     phase: centos71
+#     imageName: microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416
+#     matrix:
+#       Production: {}
+#       Online: { type: Online }
+#       Online Portable: { type: Online Portable }
+#       Offline: { type: Offline }
+#       Offline Portable: { type: Offline Portable }
 
 # Disabled: The docker image doesn't have pkill and hangs during smoke-test.
 # - template: ../phases/ci-linux.yml
@@ -39,9 +39,9 @@ phases:
 #       Online: { type: Online }
 #       Offline: { type: Offline }
 
-- template: ../phases/ci-linux.yml
-  parameters:
-    phase: ubuntu1604
-    imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
+# - template: ../phases/ci-linux.yml
+#   parameters:
+#     phase: ubuntu1604
+#     imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
 
 - template: ../phases/ci-osx.yml

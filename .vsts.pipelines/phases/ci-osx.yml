@@ -2,8 +2,8 @@ parameters:
   matrix:
     Production: {}
   phase: osx
-  queueDemands: Agent.OS -equals Darwin
-  queueName: DotNetCore-Mac
+  queueDemands: Agent.OS -equals darwin
+  queueName: Hosted Mac Preview
 
 phases:
 - phase: ${{ parameters.phase }}
