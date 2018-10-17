@@ -3,7 +3,7 @@ parameters:
     Production: {}
   phase: osx
   queueDemands: Agent.OS -equals darwin
-  queueName: Hosted Mac Preview
+  queueName: Hosted Mac Internal
 
 phases:
 - phase: ${{ parameters.phase }}
