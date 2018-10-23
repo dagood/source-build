@@ -19,6 +19,17 @@ jobs:
 
 - template: ../jobs/ci-linux.yml
   parameters:
+    job: fedora28
+    imageName: microsoft/dotnet-buildtools-prereqs:fedora-28-c103199-20180628122443
+    matrix:
+      Production: {}
+      Online: { type: Online }
+      Online Portable: { type: Online Portable }
+      Offline: { type: Offline }
+      Offline Portable: { type: Offline Portable }
+
+- template: ../jobs/ci-linux.yml
+  parameters:
     job: ubuntu1604
     imageName: microsoft/dotnet-buildtools-prereqs:ubuntu-16.04-c103199-20180628134544
 

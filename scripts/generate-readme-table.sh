@@ -25,6 +25,11 @@ print_rows() {
   row 'CentOS7.1' 'Offline Portable'; none; none; azdo; end
   row 'Debian8.4' 'Production'; jenkins; end
   row 'Fedora24' 'Production'; jenkins; end
+  row 'Fedora28' 'Production'; none; none; azdo; end
+  row 'Fedora28' 'Online'; none; none; azdo; end
+  row 'Fedora28' 'Online Portable'; none; none; azdo; end
+  row 'Fedora28' 'Offline'; none; none; azdo; end
+  row 'Fedora28' 'Offline Portable'; none; none; azdo; end
   row 'OSX10.12' 'Production'; jenkins; azdo; end
   row 'RHEL7.2' 'Production'; jenkins; end
   row 'RHEL7.2' 'Online'; jenkins; end

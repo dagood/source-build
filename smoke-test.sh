@@ -166,9 +166,8 @@ function doCommand() {
                 "${dotnetCmd}" $1 >> "$logFile" 2>&1 &
             fi
             webPid=$!
-            killCommand="pkill -SIGTERM -P $webPid"
-            echo "    waiting up to 20 seconds for web project with pid $webPid..."
-            echo "    to clean up manually after an interactive cancellation, run: $killCommand"
+            echo "    dotnet PID is $webPid. To clean up manually after an interactive cancellation, run: pkill -P $webPid"
+            echo "    waiting up to 20 seconds to be ready for Ctrl+C..."
             for seconds in $(seq 20); do
                 if [ "$(tail -n 1 "$logFile")" = 'Application started. Press Ctrl+C to shut down.' ]; then
                     echo "    app ready for shutdown after $seconds seconds"
@@ -176,8 +175,27 @@ function doCommand() {
                 fi
                 sleep 1
             done
-            echo "    stopping $webPid" | tee -a "$logFile"
+
+            childWebPids=$(
+                ps -o pid,ppid | while read -r psPid psParent; do
+                    if [ "$psParent" = "$webPid" ]; then
+                        echo "$psPid "
+                    fi
+                done
+            )
+
+            if [ ! "$childWebPids" ]; then
+                echo "    Error: Found no children of $webPid in ps output:"
+                ps -o pid,ppid,command
+                echo "    'dotnet run' likely failed to start."
+                exit 1
+            fi
+
+            killCommand="kill -SIGTERM $childWebPids"
+            echo "    stopping child PID(s) with $killCommand" | tee -a "$logFile"
             $killCommand
+
+            echo "    waiting for dotnet ($!) to stop" | tee -a "$logFile"
             wait $!
             echo "    terminated with exit code $?" | tee -a "$logFile"
         else
