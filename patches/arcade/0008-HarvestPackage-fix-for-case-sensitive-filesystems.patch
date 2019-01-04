@@ -1,0 +1,35 @@
+From 431729f9a2286abc8ff30ea4bde03422f2f93299 Mon Sep 17 00:00:00 2001
+From: Davis Goodin <dagood@microsoft.com>
+Date: Thu, 3 Jan 2019 16:37:27 -0600
+Subject: [PATCH] HarvestPackage fix for case-sensitive filesystems
+
+Package IDs are lowercased by NuGet when setting up the package cache. On case-insensitive filesystems, it's fine to still access package contents by the mixed-case ID, but on e.g. Linux, the ID must be lowercased first.
+
+I would consider this a workaround rather than a fix. The true package id is really mixed-case, so this introduces a parameter naming error by setting PackageId="$(IdToLower)".
+
+Merged in https://github.com/dotnet/arcade/commit/8681ce86a63bef909009662acbe0cb7b5961bed2
+---
+ .../src/build/Packaging.targets                             | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/Microsoft.DotNet.Build.Tasks.Packaging/src/build/Packaging.targets b/src/Microsoft.DotNet.Build.Tasks.Packaging/src/build/Packaging.targets
+index 68f9b09..610b762 100644
+--- a/src/Microsoft.DotNet.Build.Tasks.Packaging/src/build/Packaging.targets
++++ b/src/Microsoft.DotNet.Build.Tasks.Packaging/src/build/Packaging.targets
+@@ -417,8 +417,12 @@
+     <Error Condition="'$(HarvestVersion)' == '' AND '@(HarvestIncludePaths)' != ''"
+            Text="HarvestIncludePaths was specified but no previous stable version of this package was found." />
+ 
++    <PropertyGroup>
++      <IdToLower>$(Id.ToLowerInvariant())</IdToLower>
++    </PropertyGroup>
++
+     <!-- Harvest files from old package and determine support using both runtime and additional packages -->
+-    <HarvestPackage PackageId="$(Id)"
++    <HarvestPackage PackageId="$(IdToLower)"
+                     PackageVersion="$(HarvestVersion)"
+                     PackagesFolder="$(PackagesDir)"
+                     Files="@(File)"
+-- 
+2.20.1.windows.1
+

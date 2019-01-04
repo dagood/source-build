@@ -1,0 +1,46 @@
+From c1e11371b72da9bb0083d8146836807a75ada7d8 Mon Sep 17 00:00:00 2001
+From: Davis Goodin <dagood@microsoft.com>
+Date: Fri, 11 Jan 2019 11:44:11 -0600
+Subject: [PATCH] Exclude CoreFx.Private.TestUtilities pkg build
+
+AllConfigurations mode tries to build CoreFx.Private.TestUtilities. Prevent test-only prebuilts by excluding it.
+---
+ Directory.Build.props | 2 +-
+ src/packages.builds   | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/Directory.Build.props b/Directory.Build.props
+index 9c300dabaa..5d2f486dab 100644
+--- a/Directory.Build.props
++++ b/Directory.Build.props
+@@ -406,7 +406,7 @@
+     dependencies through 'ReferenceFromRuntime' property.
+   -->
+   <ItemGroup Condition="'$(DotNetBuildFromSource)' == 'true' and '$(BuildTests)' != 'true'">
+-    <ProjectExclusions Include="$(SourceDir)CoreFx.Private.TestUtilities/**/*.csproj" />
++    <ProjectExclusions Include="$(SourceDir)CoreFx.Private.TestUtilities/**/*.*proj" />
+   </ItemGroup>
+ 
+   <!-- Properties related to multi-file mode for ILC tests -->
+diff --git a/src/packages.builds b/src/packages.builds
+index 4a01637dea..dc954682e2 100644
+--- a/src/packages.builds
++++ b/src/packages.builds
+@@ -7,10 +7,12 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <Project Include="$(MSBuildThisFileDirectory)..\pkg\*\*.builds" Condition="'$(SkipManagedPackageBuild)' != 'true'">
++    <Project Include="$(MSBuildThisFileDirectory)..\pkg\*\*.builds" Condition="'$(SkipManagedPackageBuild)' != 'true'"
++             Exclude="@(ProjectExclusions)">
+       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+     </Project>
+-    <Project Include="*\pkg\**\*.pkgproj" Condition="'$(SkipManagedPackageBuild)' != 'true' AND '$(BuildAllConfigurations)' == 'true'">
++    <Project Include="*\pkg\**\*.pkgproj" Condition="'$(SkipManagedPackageBuild)' != 'true' AND '$(BuildAllConfigurations)' == 'true'"
++             Exclude="@(ProjectExclusions)">
+       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+     </Project>
+   </ItemGroup>
+-- 
+2.20.1.windows.1
+

@@ -195,6 +195,11 @@ ls "$__scriptpath/Tools/scripts/docker/"*.sh | xargs chmod +x
 mkdir -p "$(dirname "$__BUILD_TOOLS_SEMAPHORE")" && touch "$__BUILD_TOOLS_SEMAPHORE"
 mkdir -p "$(dirname "$__BUILD_TOOLS_ARCADE_SEMAPHORE")" && touch "$__BUILD_TOOLS_ARCADE_SEMAPHORE"
 
+# In CoreFX, when building uap on linux, this file takes over and causes a confusing reference
+# error. For now, just delete it. I don't know what it's for, and I haven't tracked down why it
+# doesn't exist on Windows but does on Linux.
+rm "$__TOOLRUNTIME_DIR/System.Text.Encoding.CodePages.dll"
+
 echo "Done initializing BuildTools."
 
 echo "Initializing Arcade..."

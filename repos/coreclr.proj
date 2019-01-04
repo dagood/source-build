@@ -27,6 +27,18 @@
 
   <ItemGroup>
     <RepositoryReference Include="linker" />
+
+    <!--
+      This is an ordering dependency, not a dependency on corefx assets.
+      
+      We just need to make sure corefx AllConfigurations runs first: coreclr produces some packages
+      that may interfere. AllConfigurations depends on more assets matching between coreclr and
+      corefx than the vertical, and some packages that coreclr doesn't source-build. To prevent
+      mismatch errors, don't try to use source-built coreclr to build corefx AllConfigurations yet.
+
+      This dependency can be removed when we have more isolation. https://github.com/dotnet/source-build/issues/928
+    -->
+    <RepositoryReference Include="corefx-allconfigurations" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))/dir.props" />
+
+  <PropertyGroup>
+    <!-- Use the same sources as corefx vertical to avoid doubling the submodule. -->
+    <ProjectDirectory>$(SubmoduleDirectory)corefx/</ProjectDirectory>
+  </PropertyGroup>
+
+  <Import Project="corefx.props" />
+
+  <!-- The CoreFX all configurations build, to produce packages not in NETCoreApp. -->
+  <PropertyGroup>
+    <Arguments>$(Arguments) -AllConfigurations</Arguments>
+    <!-- Both identity and runtime packages are produced in the vertical build. -->
+    <Arguments>$(Arguments) /p:SkipBuildIdentityPackage=true</Arguments>
+    <Arguments>$(Arguments) /p:SkipBuildRuntimePackage=true</Arguments>
+
+    <BuildCommand>$(Arguments)</BuildCommand>
+
+    <OfficialBuildId>20181023-03</OfficialBuildId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EnvironmentVariables Include="OfficialBuildId=$(OfficialBuildId)" />
+  </ItemGroup>
+
+  <Import Project="corefx.targets" />
+
+  <!-- Prevent the later corefx project from overwriting this one's binlogs. -->
+  <Target Name="PreserveBinlogs"
+          AfterTargets="Build">
+    <ItemGroup>
+      <Binlogs Include="$(ProjectDirectory)artifacts/log/**/*.binlog" />
+    </ItemGroup>
+
+    <Move SourceFiles="@(Binlogs)"
+          DestinationFiles="$(ProjectDirectory)artifacts/log-allconfigurations/%(RecursiveDir)%(Filename)%(Extension)" />
+  </Target>
+</Project>

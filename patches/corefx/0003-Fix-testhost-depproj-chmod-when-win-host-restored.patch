@@ -1,0 +1,31 @@
+From 59b892280cbacb0c1ce25de39d1b47c5d238881a Mon Sep 17 00:00:00 2001
+From: Davis Goodin <dagood@microsoft.com>
+Date: Thu, 20 Dec 2018 10:03:54 -0600
+Subject: [PATCH] Fix testhost depproj chmod when win host restored
+
+When building on Linux, this Exec assumes a Linux configuration is
+restored so the testhost package it picks up will have dotnet. This
+fails with '-allconfigurations' when a Windows configuration is used.
+This fix might not be the best, it only fixes the assumption.
+
+Merged in https://github.com/dotnet/corefx/commit/70d08ae0b1f2487f0684a66be364a988f181567d
+---
+ external/runtime/runtime.depproj | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/external/runtime/runtime.depproj b/external/runtime/runtime.depproj
+index 9d457a5624..5759bcf797 100644
+--- a/external/runtime/runtime.depproj
++++ b/external/runtime/runtime.depproj
+@@ -91,7 +91,7 @@
+           SkipUnchangedFiles="true"
+           UseHardlinksIfPossible="$(UseHardlink)" />
+ 
+-    <Exec Command="chmod +x $(TestHostRootPath)dotnet" Condition="'$(RunningOnUnix)' == 'true'"/>
++    <Exec Command="chmod +x $(TestHostRootPath)%(DotnetExe.Filename)%(DotnetExe.Extension)" Condition="'$(RunningOnUnix)' == 'true'"/>
+   </Target>
+ 
+   <PropertyGroup>
+-- 
+2.20.1.windows.1
+

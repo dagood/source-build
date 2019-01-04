@@ -41,6 +41,8 @@
         <RepositoryReference Include="clicommandlineparser" />
         <RepositoryReference Include="roslyn" />
 
+        <RepositoryReference Include="corefx-allconfigurations" />
+
         <!-- Tier 2 -->
         <RepositoryReference Include="aspnet-razor" />
         <RepositoryReference Include="msbuild" />

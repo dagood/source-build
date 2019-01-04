@@ -1,0 +1,53 @@
+From aba8a22a1759ad0550da5968285d42b20ac6e372 Mon Sep 17 00:00:00 2001
+From: Davis Goodin <dagood@microsoft.com>
+Date: Thu, 20 Dec 2018 11:27:15 -0600
+Subject: [PATCH] Fix casing on common Interop items
+
+Use a task rather than replacing the original lines in the projects to reduce the chance of merge conflicts.
+
+Fixed by changing Compile items in https://github.com/dotnet/corefx/commit/352444860f8405a02d45db86cbc4aacc667536f0
+---
+ src/Directory.Build.targets | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/src/Directory.Build.targets b/src/Directory.Build.targets
+index 90b4379978..bdd168fb10 100644
+--- a/src/Directory.Build.targets
++++ b/src/Directory.Build.targets
+@@ -68,4 +68,33 @@
+                       '%(Dependency.Identity)' != '_._'" />
+   </Target>  
+ 
++  <Target Name="FixInteropWindowsKernel32PathCasing"
++          BeforeTargets="BeforeCompile"
++          Condition="'@(Compile)' != ''">
++    <ItemGroup>
++      <_PathToFix
++        Include="Common/src/CoreLib/Interop/Windows/kernel32"
++        FixPath="Common/src/CoreLib/Interop/Windows/Kernel32" />
++      <_PathToFix
++        Include="Common/src/CoreLib/Interop/Windows/advapi32"
++        FixPath="Common/src/CoreLib/Interop/Windows/Advapi32" />
++      <_PathToFix
++        Include="Common/src/Interop/Windows/Kernel32"
++        FixPath="Common/src/Interop/Windows/kernel32" />
++    </ItemGroup>
++
++    <ItemGroup>
++      <_PotentialBadItem
++        Include="@(Compile)"
++        Path="%(_PathToFix.Identity)"
++        Fix="%(_PathToFix.FixPath)" />
++      <_BadInteropItem
++        Include="@(_PotentialBadItem)"
++        Condition="$([System.String]::new('%(Identity)').Contains('%(Path)'))"
++        Fixed="$([System.String]::new('%(Identity)').Replace('%(Path)', '%(Fix)'))" />
++      <Compile Remove="@(_BadInteropItem)" />
++      <Compile Include="@(_BadInteropItem -> '%(Fixed)')" />
++    </ItemGroup>
++  </Target>
++
+ </Project>
+-- 
+2.20.1.windows.1
+
