@@ -54,6 +54,12 @@ namespace Microsoft.DotNet.SourceBuild.Tasks
         public string DestinationDir { get; set; }
 
         /// <summary>
+        /// A list of package nupkgs to forcibly treat as reference packages. Native binary files
+        /// will be skipped if they exist in the package.
+        /// </summary>
+        public string[] ForcePackageFiles { get; set; }
+
+        /// <summary>
         /// Enumerate all files in a directory and its sub-directories.
         /// </summary>
         private static IEnumerable<string> EnumerateAllFiles(string path, string searchPattern)
@@ -65,15 +71,22 @@ namespace Microsoft.DotNet.SourceBuild.Tasks
         {
             DateTime startTime = DateTime.Now;
 
-            var referenceOnlyPackageDirectories = EnumerateAllFiles(PackageCacheDir, "*.nupkg")
-                .Where(nupkgFilePath =>
+            var referenceOnlyPackages = EnumerateAllFiles(PackageCacheDir, "*.nupkg")
+                .Select(nupkgFilePath => new
                 {
-                    // Get all files in the nupkg path and normalize directory separators
-                    var nupkgFiles = EnumerateAllFiles(Path.GetDirectoryName(nupkgFilePath), "*.*").ToArray();
+                    Files = EnumerateAllFiles(Path.GetDirectoryName(nupkgFilePath), "*.*").ToArray(),
+                    ForceRefPackage = ForcePackageFiles?.Contains(nupkgFilePath) == true
+                })
+                .Where(nupkg =>
+                {
+                    if (nupkg.ForceRefPackage)
+                    {
+                        return true;
+                    }
 
                     // Do not include directories that contain exes, shared object files, OSX dynamic libraries
                     // or profiling data
-                    if (nupkgFiles
+                    if (nupkg.Files
                         .Any(
                             file => extensionsToExclude.Contains(Path.GetExtension(file)) 
                             || pathsToExclude.Any(path => file.Contains(path))))
@@ -83,23 +96,28 @@ namespace Microsoft.DotNet.SourceBuild.Tasks
                     
                     // Return directories that, if containing dlls, only have dlls in the
                     // ref folder
-                    return nupkgFiles
+                    return nupkg.Files
                             .Where(file => String.Equals(Path.GetExtension(file), ".dll", StringComparison.OrdinalIgnoreCase))
                             .All(dir => dir.Contains(refPath));
                 })
-                .Select(Path.GetDirectoryName)
                 .ToArray();
 
             Directory.CreateDirectory(IdentifiedPackagesDir);
-            foreach (var dir in referenceOnlyPackageDirectories)
+            foreach (var package in referenceOnlyPackages)
             {
-                foreach (var file in EnumerateAllFiles(dir, "*.*"))
+                foreach (var file in package.Files)
                 {
                     if (file.EndsWith(".nupkg")) 
                     {
                         File.Copy(file, Path.Combine(IdentifiedPackagesDir, Path.GetFileName(file)), true);
                     }
-                    else if (!file.EndsWith(".nupkg.sha512"))
+                    else if (file.EndsWith(".nupkg.sha512") ||
+                        extensionsToExclude.Contains(Path.GetExtension(file)) ||
+                        Path.GetFileName(Path.GetDirectoryName(file)) == "native")
+                    {
+                        Log.LogMessage(MessageImportance.Low, $"Skipped {file}");
+                    }
+                    else
                     {
                         var destination = file.Replace(PackageCacheDir, DestinationDir);
                         if (file.EndsWith(".dll"))
@@ -123,7 +141,7 @@ namespace Microsoft.DotNet.SourceBuild.Tasks
             Log.LogMessage(
                 MessageImportance.High,
                 "Identified reference-only packages. " +
-                    $"Found {referenceOnlyPackageDirectories.Count()} packages.  Took {DateTime.Now - startTime} ");
+                    $"Found {referenceOnlyPackages.Count()} packages.  Took {DateTime.Now - startTime} ");
 
             return !Log.HasLoggedErrors;
         }

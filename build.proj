@@ -51,11 +51,25 @@
           AfterTargets="Build"
           Condition="'$(OfflineBuild)' != 'true' and '$(OS)' != 'Windows_NT'">
 
+    <ItemGroup>
+      <!-- CoreCLR packages used by CoreFX AllConfigurations. -->
+      <ForcePackageFiles Include="$(PackagesDir)runtime.*.microsoft.netcore.runtime.coreclr/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)runtime.*.microsoft.netcore.jit/*/*.nupkg" />
+      <!-- CoreFX AllConfigurations harvested packages. -->
+      <ForcePackageFiles Include="$(PackagesDir)microsoft.csharp/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)microsoft.visualbasic/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)microsoft.win32.registry/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)microsoft.win32.registry.accesscontrol/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)microsoft.win32.systemevents/*/*.nupkg" />
+      <ForcePackageFiles Include="$(PackagesDir)system.*/*/*.nupkg" />
+    </ItemGroup>
+
     <CopyReferenceOnlyPackages
         PackageCacheDir="$(PackagesDir)"
         DllDestinationDir="$(ReferencePackagesSourceDir)"
         IdentifiedPackagesDir="$(ReferencePackagesToDeleteDir)"
         DestinationDir="$(ReferencePackagesStagingDir)"
+        ForcePackageFiles="@(ForcePackageFiles)"
         />
 
     <!-- Ildasm has trouble writing to paths that are longer than 260 chars. (see https://github.com/dotnet/coreclr/issues/20397)
