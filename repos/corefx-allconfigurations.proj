@@ -21,6 +21,10 @@
     <OfficialBuildId>20181023-03</OfficialBuildId>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(OfflineBuild)' == 'true'">
+    <UseSourceBuiltSdkOverride Include="@(ILSdkOverride)" />
+  </ItemGroup>
+
   <ItemGroup>
     <EnvironmentVariables Include="OfficialBuildId=$(OfficialBuildId)" />
   </ItemGroup>

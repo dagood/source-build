@@ -199,6 +199,9 @@ SOURCE_BUILT_SDK_TOOLS_DIR="$TARBALL_ROOT/Tools/source-built/$ROSLYN_TOOLS_PACKA
 cp "$REPO_TOOLSET_PACKAGE_DIR/tools/"*.props "$SOURCE_BUILT_SDK_TOOLS_DIR"
 cp "$REPO_TOOLSET_PACKAGE_DIR/tools/"*.targets "$SOURCE_BUILT_SDK_TOOLS_DIR"
 
+echo 'WORKAROUND: Copying the source-built IL SDK into tarball for corefx-allconfigurations to use...'
+cp -r "$SCRIPT_ROOT/Tools/source-built/Microsoft.NET.Sdk.IL" "$TARBALL_ROOT/Tools/source-built/"
+
 echo 'Recording commits for the source-build repo and all submodules, to aid in reproducibility...'
 
 cat >$TARBALL_ROOT/source-build-info.txt << EOF
