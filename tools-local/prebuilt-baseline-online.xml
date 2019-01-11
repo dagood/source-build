@@ -12,6 +12,7 @@
     <Dir>src/core-setup/</Dir>
     <Dir>src/coreclr/</Dir>
     <Dir>src/corefx/</Dir>
+    <Dir>src/corefx/</Dir>
     <Dir>src/fsharp/</Dir>
     <Dir>src/known-good/</Dir>
     <Dir>src/linker/</Dir>
@@ -102,6 +103,7 @@
     <Usage Id="Microsoft.CodeQuality.Analyzers" Version="2.6.2-beta2" IsDirectDependency="true" />
     <Usage Id="Microsoft.CSharp" Version="4.0.1" />
     <Usage Id="Microsoft.CSharp" Version="4.3.0" />
+    <Usage Id="Microsoft.CSharp" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="Microsoft.Data.Edm" Version="5.6.4" />
     <Usage Id="Microsoft.Data.Edm" Version="5.8.2" />
     <Usage Id="Microsoft.Data.OData" Version="5.6.4" />
@@ -163,21 +165,31 @@
     <Usage Id="Microsoft.NET.Build.Extensions" Version="3.0.100-preview.18578.2" />
     <Usage Id="Microsoft.Net.Compilers" Version="2.8.0" />
     <Usage Id="Microsoft.Net.Compilers.netcore" Version="2.6.0-beta3-62316-02" IsDirectDependency="true" />
+    <Usage Id="Microsoft.Net.Native.Compiler" Version="2.0.3" />
+    <Usage Id="Microsoft.Net.Native.SharedLibrary-arm" Version="2.0.0" />
+    <Usage Id="Microsoft.Net.Native.SharedLibrary-x64" Version="2.0.0" />
+    <Usage Id="Microsoft.Net.Native.SharedLibrary-x86" Version="2.0.0" />
     <Usage Id="Microsoft.NET.Sdk" Version="3.0.100-preview.18578.2" IsDirectDependency="true" />
+    <Usage Id="Microsoft.NET.Sdk.IL" Version="3.0.0-preview-27107-01" />
     <Usage Id="Microsoft.NET.Sdk.WindowsDesktop" Version="3.0.0-alpha-27115-10" />
+    <Usage Id="Microsoft.Net.UWPCoreRuntimeSdk" Version="2.1.2" />
     <Usage Id="Microsoft.NetCore.Analyzers" Version="2.6.2-beta2" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.App" Version="1.0.3" IsDirectDependency="true" IsAutoReferenced="true" />
     <Usage Id="Microsoft.NETCore.App" Version="1.0.5" IsDirectDependency="true" IsAutoReferenced="true" />
     <Usage Id="Microsoft.NETCore.App" Version="1.1.1" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.App" Version="2.0.0" IsDirectDependency="true" IsAutoReferenced="true" />
+    <Usage Id="Microsoft.NETCore.App" Version="2.0.7" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.App" Version="2.1.0-preview2-26406-04" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.App" Version="2.1.0" IsDirectDependency="true" IsAutoReferenced="true" />
+    <Usage Id="Microsoft.NETCore.App" Version="2.1.3" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.App" Version="2.1.5" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Compilers" Version="2.8.0" />
     <Usage Id="Microsoft.NETCore.Compilers" Version="2.9.0" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.0.0" />
+    <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.0.7" />
     <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.1.0-preview2-26406-04" />
     <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.1.0" />
+    <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.1.3" />
     <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="2.2.0" />
     <Usage Id="Microsoft.NETCore.DotNetAppHost" Version="3.0.0-preview-27121-02" />
     <Usage Id="Microsoft.NETCore.DotNetHost" Version="1.0.1" />
@@ -187,40 +199,55 @@
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="1.0.5" />
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="1.1.0" />
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="2.0.0" />
+    <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="2.0.7" />
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="2.1.0-preview2-26406-04" />
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="2.1.0" />
+    <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="2.1.3" />
     <Usage Id="Microsoft.NETCore.DotNetHostPolicy" Version="3.0.0-preview-27121-02" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="1.0.1" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="1.1.0" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.0.0" />
+    <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.0.7" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.1.0-preview2-26406-04" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.1.0" />
+    <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.1.3" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="2.2.0" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.DotNetHostResolver" Version="3.0.0-preview-27121-02" />
     <Usage Id="Microsoft.NETCore.ILAsm" Version="2.2.0-preview3-27008-03" IsDirectDependency="true" />
+    <Usage Id="Microsoft.NETCore.ILAsm" Version="3.0.0-preview-27121-03" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.ILDAsm" Version="2.2.0-preview3-27008-03" IsDirectDependency="true" />
+    <Usage Id="Microsoft.NETCore.ILDAsm" Version="3.0.0-preview-27121-03" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Jit" Version="1.0.5" />
     <Usage Id="Microsoft.NETCore.Jit" Version="1.0.7" />
     <Usage Id="Microsoft.NETCore.Jit" Version="1.1.1" />
+    <Usage Id="Microsoft.NETCore.Jit" Version="2.1.0-b-uwp6-25707-02" />
     <Usage Id="Microsoft.NETCore.Jit" Version="2.2.0-preview3-27008-03" />
+    <Usage Id="Microsoft.NETCore.Jit" Version="3.0.0-preview-27121-03" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="1.0.1" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="1.0.2-beta-24224-02" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="1.0.2" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="1.1.0" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="2.0.0" />
+    <Usage Id="Microsoft.NETCore.Platforms" Version="2.0.2" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="2.1.0-preview2-26406-04" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="2.1.0" />
+    <Usage Id="Microsoft.NETCore.Platforms" Version="2.1.1" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="3.0.0-preview.18571.2" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Platforms" Version="3.0.0-preview.18571.3" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="1.0.5" />
     <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="1.0.7" />
     <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="1.1.1" />
+    <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="2.1.0-b-uwp6-25707-02" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="2.2.0-preview3-27008-03" />
+    <Usage Id="Microsoft.NETCore.Runtime.CoreCLR" Version="3.0.0-preview-27121-03" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Targets" Version="1.0.1" />
     <Usage Id="Microsoft.NETCore.Targets" Version="1.0.3" />
     <Usage Id="Microsoft.NETCore.Targets" Version="1.1.0" />
+    <Usage Id="Microsoft.NETCore.Targets" Version="2.0.0" />
     <Usage Id="Microsoft.NETCore.Targets" Version="2.1.0-preview2-26406-04" />
     <Usage Id="Microsoft.NETCore.Targets" Version="2.1.0" />
+    <Usage Id="Microsoft.NETCore.TestHost" Version="3.0.0-preview-27121-03" IsDirectDependency="true" />
+    <Usage Id="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.7" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETCore.Windows.ApiSets" Version="1.0.1" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-alpha-003" IsDirectDependency="true" />
     <Usage Id="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-alpha-004" IsDirectDependency="true" IsAutoReferenced="true" />
@@ -229,13 +256,22 @@
     <Usage Id="Microsoft.NETFramework.ReferenceAssemblies.net46" Version="1.0.0-alpha-004" />
     <Usage Id="Microsoft.NETFramework.ReferenceAssemblies.net461" Version="1.0.0-alpha-004" />
     <Usage Id="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.0-alpha-004" />
+    <Usage Id="Microsoft.NETNative.Analyzer" Version="1.0.0" />
     <Usage Id="Microsoft.Private.Intellisense" Version="2.0.0-preview3-26209-0" IsDirectDependency="true" />
     <Usage Id="Microsoft.SourceLink.Common" Version="1.0.0-beta-63401-01" />
     <Usage Id="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63401-01" IsDirectDependency="true" IsAutoReferenced="true" />
     <Usage Id="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-beta-63401-01" IsDirectDependency="true" IsAutoReferenced="true" />
     <Usage Id="Microsoft.SymbolUploader.Build.Task" Version="1.0.0-beta-63412-03" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.5" Version="1.0.1" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.5.1" Version="1.0.1" IsDirectDependency="true" />
     <Usage Id="Microsoft.TargetingPack.NETFramework.v4.6" Version="1.0.1" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.6.1" Version="1.0.1" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.6.2" Version="1.0.1" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.7" Version="1.0.1" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.NETFramework.v4.7.1" Version="1.0.0" IsDirectDependency="true" />
     <Usage Id="Microsoft.TargetingPack.NETFramework.v4.7.2" Version="1.0.0" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.Private.NETNative" Version="1.1.0-beta-27114-00" IsDirectDependency="true" />
+    <Usage Id="Microsoft.TargetingPack.Private.NETNative" Version="1.1.0-rel-25728-00" IsDirectDependency="true" />
     <Usage Id="Microsoft.TargetingPack.Private.WinRT" Version="1.0.5" IsDirectDependency="true" />
     <Usage Id="Microsoft.TemplateEngine.Abstractions" Version="1.0.2-beta4-20180930-2076037" IsDirectDependency="true" />
     <Usage Id="Microsoft.TemplateEngine.Cli" Version="1.0.2-beta4-20180930-2076037" IsDirectDependency="true" />
@@ -247,6 +283,7 @@
     <Usage Id="Microsoft.TemplateEngine.Utils" Version="1.0.2-beta4-20180930-2076037" IsDirectDependency="true" />
     <Usage Id="Microsoft.VisualBasic" Version="10.0.1" />
     <Usage Id="Microsoft.VisualBasic" Version="10.1.0" />
+    <Usage Id="Microsoft.VisualBasic" Version="10.3.0" IsDirectDependency="true" />
     <Usage Id="Microsoft.VisualStudio.CUIT" Version="15.8.0-preview-1831095" IsDirectDependency="true" />
     <Usage Id="Microsoft.VisualStudio.QualityTools" Version="15.8.0-preview-1831095" IsDirectDependency="true" />
     <Usage Id="Microsoft.VisualStudio.QualityTools.DataCollectors" Version="15.8.0-preview-1831095" IsDirectDependency="true" />
@@ -262,6 +299,9 @@
     <Usage Id="Microsoft.Win32.Primitives" Version="4.3.0" />
     <Usage Id="Microsoft.Win32.Registry" Version="4.0.0" />
     <Usage Id="Microsoft.Win32.Registry" Version="4.3.0" />
+    <Usage Id="Microsoft.Win32.Registry" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="Microsoft.Win32.Registry.AccessControl" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="Microsoft.Win32.SystemEvents" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="NETStandard.Library" Version="1.6.0" IsDirectDependency="true" />
     <Usage Id="NETStandard.Library" Version="1.6.1" IsDirectDependency="true" IsAutoReferenced="true" />
     <Usage Id="NETStandard.Library" Version="2.0.0" />
@@ -386,12 +426,19 @@
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.DotNetHostResolver" Version="2.0.0" Rid="linux-x64" />
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.DotNetHostResolver" Version="3.0.0-preview-27121-02" Rid="linux-x64" />
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.ILAsm" Version="2.2.0-preview3-27008-03" Rid="linux-x64" />
+    <Usage Id="runtime.linux-x64.Microsoft.NETCore.ILAsm" Version="3.0.0-preview-27121-03" Rid="linux-x64" />
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.ILDAsm" Version="2.2.0-preview3-27008-03" Rid="linux-x64" />
+    <Usage Id="runtime.linux-x64.Microsoft.NETCore.ILDAsm" Version="3.0.0-preview-27121-03" Rid="linux-x64" />
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.Jit" Version="2.2.0-preview3-27008-03" Rid="linux-x64" />
+    <Usage Id="runtime.linux-x64.Microsoft.NETCore.Jit" Version="3.0.0-preview-27121-03" Rid="linux-x64" />
     <Usage Id="runtime.linux-x64.Microsoft.NETCore.Runtime.CoreCLR" Version="2.2.0-preview3-27008-03" Rid="linux-x64" />
+    <Usage Id="runtime.linux-x64.Microsoft.NETCore.Runtime.CoreCLR" Version="3.0.0-preview-27121-03" Rid="linux-x64" />
+    <Usage Id="runtime.linux-x64.Microsoft.NETCore.TestHost" Version="3.0.0-preview-27121-03" Rid="linux-x64" />
     <Usage Id="runtime.native.System" Version="4.0.0" />
     <Usage Id="runtime.native.System" Version="4.3.0" />
+    <Usage Id="runtime.native.System.Data.SqlClient.sni" Version="4.3.0" />
     <Usage Id="runtime.native.System.Data.SqlClient.sni" Version="4.4.0" IsDirectDependency="true" />
+    <Usage Id="runtime.native.System.Data.SqlClient.sni" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="runtime.native.System.IO.Compression" Version="4.1.0" />
     <Usage Id="runtime.native.System.IO.Compression" Version="4.3.0" />
     <Usage Id="runtime.native.System.Net.Http" Version="4.0.1" />
@@ -431,13 +478,26 @@
     <Usage Id="runtime.unix.System.Runtime.Extensions" Version="4.3.0" Rid="unix" />
     <Usage Id="runtime.win-arm64.runtime.native.System.Data.SqlClient.sni" Version="4.4.0" Rid="win-arm64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.App" Version="2.0.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.App" Version="2.0.7" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.App" Version="2.1.0" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetAppHost" Version="2.0.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetAppHost" Version="2.0.7" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetAppHost" Version="2.1.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetAppHost" Version="3.0.0-preview-27121-02" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHost" Version="3.0.0-preview-27121-02" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy" Version="2.0.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy" Version="2.0.7" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy" Version="2.1.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostPolicy" Version="3.0.0-preview-27121-02" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostResolver" Version="2.0.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostResolver" Version="2.0.7" Rid="win-x64" />
     <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostResolver" Version="2.1.0" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.DotNetHostResolver" Version="3.0.0-preview-27121-02" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.Jit" Version="2.1.0-b-uwp6-25707-02" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.Jit" Version="3.0.0-preview-27121-03" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.Runtime.CoreCLR" Version="2.1.0-b-uwp6-25707-02" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.Runtime.CoreCLR" Version="3.0.0-preview-27121-03" Rid="win-x64" />
+    <Usage Id="runtime.win-x64.Microsoft.NETCore.TestHost" Version="3.0.0-preview-27121-03" Rid="win-x64" />
     <Usage Id="runtime.win-x64.runtime.native.System.Data.SqlClient.sni" Version="4.4.0" Rid="win-x64" />
     <Usage Id="runtime.win-x86.Microsoft.NETCore.App" Version="2.1.0" Rid="win-x86" />
     <Usage Id="runtime.win-x86.Microsoft.NETCore.DotNetAppHost" Version="2.1.0" Rid="win-x86" />
@@ -458,12 +518,16 @@
     <Usage Id="runtime.win.System.Net.Sockets" Version="4.3.0" Rid="win" />
     <Usage Id="runtime.win.System.Runtime.Extensions" Version="4.1.0" Rid="win" />
     <Usage Id="runtime.win.System.Runtime.Extensions" Version="4.3.0" Rid="win" />
+    <Usage Id="runtime.win10-arm.Microsoft.Net.UWPCoreRuntimeSdk" Version="2.1.2" Rid="win10-arm" />
+    <Usage Id="runtime.win10-x64.Microsoft.Net.UWPCoreRuntimeSdk" Version="2.1.2" Rid="win10-x64" />
+    <Usage Id="runtime.win10-x86.Microsoft.Net.UWPCoreRuntimeSdk" Version="2.1.2" Rid="win10-x86" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.DotNetHost" Version="1.0.1" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.DotNetHostPolicy" Version="1.0.5" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.DotNetHostResolver" Version="1.0.1" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.Jit" Version="1.0.7" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.Runtime.CoreCLR" Version="1.0.7" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.Microsoft.NETCore.Windows.ApiSets" Version="1.0.1" Rid="win7-x64" />
+    <Usage Id="runtime.win7-x64.runtime.native.System.Data.SqlClient.sni" Version="4.3.0" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.runtime.native.System.IO.Compression" Version="4.0.1" Rid="win7-x64" />
     <Usage Id="runtime.win7-x64.runtime.native.System.IO.Compression" Version="4.3.0" Rid="win7-x64" />
     <Usage Id="runtime.win7-x86.Microsoft.NETCore.DotNetHost" Version="1.0.1" Rid="win7-x86" />
@@ -472,6 +536,7 @@
     <Usage Id="runtime.win7-x86.Microsoft.NETCore.Jit" Version="1.0.5" Rid="win7-x86" />
     <Usage Id="runtime.win7-x86.Microsoft.NETCore.Runtime.CoreCLR" Version="1.0.5" Rid="win7-x86" />
     <Usage Id="runtime.win7-x86.Microsoft.NETCore.Windows.ApiSets" Version="1.0.1" Rid="win7-x86" />
+    <Usage Id="runtime.win7-x86.runtime.native.System.Data.SqlClient.sni" Version="4.3.0" Rid="win7-x86" />
     <Usage Id="runtime.win7-x86.runtime.native.System.IO.Compression" Version="4.3.0" Rid="win7-x86" />
     <Usage Id="runtime.win7.System.Private.Uri" Version="4.0.1" Rid="win7" />
     <Usage Id="runtime.win7.System.Private.Uri" Version="4.0.2" Rid="win7" />
@@ -483,8 +548,10 @@
     <Usage Id="System.Buffers" Version="4.0.0" />
     <Usage Id="System.Buffers" Version="4.3.0" />
     <Usage Id="System.Buffers" Version="4.4.0" />
+    <Usage Id="System.Buffers" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Buffers" Version="4.6.0-preview1-26822-04" />
     <Usage Id="System.CodeDom" Version="4.4.0" />
+    <Usage Id="System.CodeDom" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Collections" Version="4.0.11" />
     <Usage Id="System.Collections" Version="4.3.0" />
     <Usage Id="System.Collections.Concurrent" Version="4.0.12" />
@@ -502,27 +569,45 @@
     <Usage Id="System.ComponentModel" Version="4.3.0" />
     <Usage Id="System.ComponentModel.Annotations" Version="4.1.0" />
     <Usage Id="System.ComponentModel.Annotations" Version="4.3.0" />
+    <Usage Id="System.ComponentModel.Annotations" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.ComponentModel.Composition" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.ComponentModel.EventBasedAsync" Version="4.0.11" />
     <Usage Id="System.ComponentModel.Primitives" Version="4.1.0" />
     <Usage Id="System.ComponentModel.Primitives" Version="4.3.0" />
     <Usage Id="System.ComponentModel.TypeConverter" Version="4.1.0" />
     <Usage Id="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <Usage Id="System.Composition" Version="1.1.0" IsDirectDependency="true" />
+    <Usage Id="System.Composition" Version="1.2.0" IsDirectDependency="true" />
     <Usage Id="System.Composition.AttributedModel" Version="1.1.0" />
+    <Usage Id="System.Composition.AttributedModel" Version="1.2.0" IsDirectDependency="true" />
     <Usage Id="System.Composition.Convention" Version="1.1.0" />
+    <Usage Id="System.Composition.Convention" Version="1.2.0" IsDirectDependency="true" />
     <Usage Id="System.Composition.Hosting" Version="1.1.0" />
+    <Usage Id="System.Composition.Hosting" Version="1.2.0" IsDirectDependency="true" />
     <Usage Id="System.Composition.Runtime" Version="1.1.0" />
+    <Usage Id="System.Composition.Runtime" Version="1.2.0" IsDirectDependency="true" />
     <Usage Id="System.Composition.TypedParts" Version="1.1.0" />
+    <Usage Id="System.Composition.TypedParts" Version="1.2.0" IsDirectDependency="true" />
+    <Usage Id="System.Configuration.ConfigurationManager" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Console" Version="4.0.0" />
     <Usage Id="System.Console" Version="4.3.0" />
+    <Usage Id="System.Data.Common" Version="4.3.0" />
+    <Usage Id="System.Data.DataSetExtensions" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Data.Odbc" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Data.SqlClient" Version="4.3.0" IsDirectDependency="true" />
+    <Usage Id="System.Data.SqlClient" Version="4.5.1" IsDirectDependency="true" />
     <Usage Id="System.Diagnostics.Contracts" Version="4.0.1" />
+    <Usage Id="System.Diagnostics.Contracts" Version="4.3.0" IsDirectDependency="true" />
     <Usage Id="System.Diagnostics.Debug" Version="4.0.11" />
     <Usage Id="System.Diagnostics.Debug" Version="4.3.0" />
     <Usage Id="System.Diagnostics.DiagnosticSource" Version="4.0.0" />
     <Usage Id="System.Diagnostics.DiagnosticSource" Version="4.3.0" />
     <Usage Id="System.Diagnostics.DiagnosticSource" Version="4.4.0" IsDirectDependency="true" />
+    <Usage Id="System.Diagnostics.DiagnosticSource" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Diagnostics.EventLog" Version="4.5.0" />
     <Usage Id="System.Diagnostics.FileVersionInfo" Version="4.0.0" IsDirectDependency="true" />
     <Usage Id="System.Diagnostics.FileVersionInfo" Version="4.3.0" IsDirectDependency="true" />
+    <Usage Id="System.Diagnostics.PerformanceCounter" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Diagnostics.Process" Version="4.1.0" />
     <Usage Id="System.Diagnostics.Process" Version="4.3.0" />
     <Usage Id="System.Diagnostics.StackTrace" Version="4.0.1" />
@@ -535,6 +620,10 @@
     <Usage Id="System.Diagnostics.TraceSource" Version="4.3.0" IsDirectDependency="true" />
     <Usage Id="System.Diagnostics.Tracing" Version="4.1.0" />
     <Usage Id="System.Diagnostics.Tracing" Version="4.3.0" />
+    <Usage Id="System.DirectoryServices" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.DirectoryServices.AccountManagement" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.DirectoryServices.Protocols" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Drawing.Common" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Dynamic.Runtime" Version="4.0.11" />
     <Usage Id="System.Dynamic.Runtime" Version="4.3.0" />
     <Usage Id="System.Globalization" Version="4.0.11" />
@@ -551,17 +640,22 @@
     <Usage Id="System.IO.Compression.ZipFile" Version="4.3.0" />
     <Usage Id="System.IO.FileSystem" Version="4.0.1" />
     <Usage Id="System.IO.FileSystem" Version="4.3.0" />
+    <Usage Id="System.IO.FileSystem.AccessControl" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.IO.FileSystem.Primitives" Version="4.0.1" />
     <Usage Id="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <Usage Id="System.IO.FileSystem.Watcher" Version="4.0.0" />
     <Usage Id="System.IO.FileSystem.Watcher" Version="4.3.0" />
     <Usage Id="System.IO.MemoryMappedFiles" Version="4.0.0" />
     <Usage Id="System.IO.MemoryMappedFiles" Version="4.3.0" />
+    <Usage Id="System.IO.Packaging" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.IO.Pipelines" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.IO.Pipes" Version="4.0.0" />
     <Usage Id="System.IO.Pipes" Version="4.3.0" />
     <Usage Id="System.IO.Pipes.AccessControl" Version="4.3.0" />
+    <Usage Id="System.IO.Ports" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.IO.UnmanagedMemoryStream" Version="4.0.1" />
     <Usage Id="System.IO.UnmanagedMemoryStream" Version="4.3.0" />
+    <Usage Id="System.Json" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Linq" Version="4.1.0" />
     <Usage Id="System.Linq" Version="4.3.0" />
     <Usage Id="System.Linq.Expressions" Version="4.1.0" />
@@ -571,13 +665,16 @@
     <Usage Id="System.Linq.Parallel" Version="4.3.0" />
     <Usage Id="System.Linq.Queryable" Version="4.0.1" />
     <Usage Id="System.Linq.Queryable" Version="4.3.0" />
+    <Usage Id="System.Management" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Memory" Version="4.5.0" />
     <Usage Id="System.Memory" Version="4.5.1" />
     <Usage Id="System.Net.Http" Version="4.1.0" />
     <Usage Id="System.Net.Http" Version="4.1.1" />
     <Usage Id="System.Net.Http" Version="4.1.2" />
     <Usage Id="System.Net.Http" Version="4.3.0" />
+    <Usage Id="System.Net.Http" Version="4.3.2" />
     <Usage Id="System.Net.Http" Version="4.3.3" IsDirectDependency="true" />
+    <Usage Id="System.Net.Http.WinHttpHandler" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Net.NameResolution" Version="4.0.0" />
     <Usage Id="System.Net.NameResolution" Version="4.3.0" />
     <Usage Id="System.Net.Primitives" Version="4.0.11" />
@@ -591,9 +688,12 @@
     <Usage Id="System.Net.Sockets" Version="4.3.0" />
     <Usage Id="System.Net.WebHeaderCollection" Version="4.0.1" />
     <Usage Id="System.Net.WebHeaderCollection" Version="4.3.0" />
+    <Usage Id="System.Net.WebSockets.WebSocketProtocol" Version="4.5.1" IsDirectDependency="true" />
+    <Usage Id="System.Numerics.Tensors" Version="0.1.0" IsDirectDependency="true" />
     <Usage Id="System.Numerics.Vectors" Version="4.1.1" />
     <Usage Id="System.Numerics.Vectors" Version="4.3.0" />
     <Usage Id="System.Numerics.Vectors" Version="4.4.0" />
+    <Usage Id="System.Numerics.Vectors" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.ObjectModel" Version="4.0.12" />
     <Usage Id="System.ObjectModel" Version="4.3.0" />
     <Usage Id="System.Private.DataContractSerialization" Version="4.1.1" />
@@ -602,8 +702,10 @@
     <Usage Id="System.Private.Uri" Version="4.3.0" />
     <Usage Id="System.Reflection" Version="4.1.0" />
     <Usage Id="System.Reflection" Version="4.3.0" />
+    <Usage Id="System.Reflection.Context" Version="4.3.0" IsDirectDependency="true" />
     <Usage Id="System.Reflection.DispatchProxy" Version="4.0.1" />
     <Usage Id="System.Reflection.DispatchProxy" Version="4.3.0" />
+    <Usage Id="System.Reflection.DispatchProxy" Version="4.5.1" IsDirectDependency="true" />
     <Usage Id="System.Reflection.Emit" Version="4.0.1" />
     <Usage Id="System.Reflection.Emit" Version="4.3.0" />
     <Usage Id="System.Reflection.Emit.ILGeneration" Version="4.0.1" />
@@ -621,6 +723,7 @@
     <Usage Id="System.Reflection.Primitives" Version="4.3.0" />
     <Usage Id="System.Reflection.TypeExtensions" Version="4.1.0" />
     <Usage Id="System.Reflection.TypeExtensions" Version="4.3.0" />
+    <Usage Id="System.Reflection.TypeExtensions" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Resources.Reader" Version="4.0.0" />
     <Usage Id="System.Resources.Reader" Version="4.3.0" />
     <Usage Id="System.Resources.ResourceManager" Version="4.0.1" />
@@ -629,7 +732,9 @@
     <Usage Id="System.Runtime" Version="4.1.0" />
     <Usage Id="System.Runtime" Version="4.3.0" />
     <Usage Id="System.Runtime.Analyzers" Version="1.1.0" IsDirectDependency="true" />
+    <Usage Id="System.Runtime.Caching" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Runtime.CompilerServices.Unsafe" Version="4.5.0" />
+    <Usage Id="System.Runtime.CompilerServices.Unsafe" Version="4.5.1" IsDirectDependency="true" />
     <Usage Id="System.Runtime.Extensions" Version="4.1.0" />
     <Usage Id="System.Runtime.Extensions" Version="4.3.0" />
     <Usage Id="System.Runtime.Handles" Version="4.0.1" />
@@ -648,8 +753,10 @@
     <Usage Id="System.Runtime.Serialization.Primitives" Version="4.1.1" IsDirectDependency="true" />
     <Usage Id="System.Runtime.Serialization.Primitives" Version="4.3.0" />
     <Usage Id="System.Runtime.Serialization.Xml" Version="4.1.1" />
+    <Usage Id="System.Runtime.WindowsRuntime" Version="4.3.0" IsDirectDependency="true" />
+    <Usage Id="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.3.0" IsDirectDependency="true" />
     <Usage Id="System.Security.AccessControl" Version="4.3.0" />
-    <Usage Id="System.Security.AccessControl" Version="4.5.0" />
+    <Usage Id="System.Security.AccessControl" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Security.Claims" Version="4.0.1" />
     <Usage Id="System.Security.Claims" Version="4.3.0" />
     <Usage Id="System.Security.Cryptography.Algorithms" Version="4.2.0" />
@@ -670,15 +777,18 @@
     <Usage Id="System.Security.Cryptography.Primitives" Version="4.3.0" />
     <Usage Id="System.Security.Cryptography.ProtectedData" Version="4.0.0" />
     <Usage Id="System.Security.Cryptography.ProtectedData" Version="4.3.0" />
-    <Usage Id="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
+    <Usage Id="System.Security.Cryptography.ProtectedData" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Security.Cryptography.X509Certificates" Version="4.1.0" />
     <Usage Id="System.Security.Cryptography.X509Certificates" Version="4.3.0" />
-    <Usage Id="System.Security.Permissions" Version="4.5.0" />
+    <Usage Id="System.Security.Cryptography.Xml" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Security.Permissions" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Security.Principal" Version="4.0.1" />
     <Usage Id="System.Security.Principal" Version="4.3.0" />
     <Usage Id="System.Security.Principal.Windows" Version="4.0.0" />
     <Usage Id="System.Security.Principal.Windows" Version="4.3.0" />
-    <Usage Id="System.Security.Principal.Windows" Version="4.5.0" />
+    <Usage Id="System.Security.Principal.Windows" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.ServiceModel.Syndication" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.ServiceProcess.ServiceController" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Spatial" Version="5.6.4" />
     <Usage Id="System.Spatial" Version="5.8.2" />
     <Usage Id="System.Text.Encoding" Version="4.0.11" />
@@ -686,13 +796,16 @@
     <Usage Id="System.Text.Encoding.CodePages" Version="4.0.1" />
     <Usage Id="System.Text.Encoding.CodePages" Version="4.3.0" />
     <Usage Id="System.Text.Encoding.CodePages" Version="4.4.0" />
-    <Usage Id="System.Text.Encoding.CodePages" Version="4.5.0" />
+    <Usage Id="System.Text.Encoding.CodePages" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Text.Encoding.Extensions" Version="4.0.11" />
     <Usage Id="System.Text.Encoding.Extensions" Version="4.3.0" />
+    <Usage Id="System.Text.Encodings.Web" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Text.RegularExpressions" Version="4.1.0" />
     <Usage Id="System.Text.RegularExpressions" Version="4.3.0" />
     <Usage Id="System.Threading" Version="4.0.11" />
     <Usage Id="System.Threading" Version="4.3.0" />
+    <Usage Id="System.Threading.AccessControl" Version="4.5.0" IsDirectDependency="true" />
+    <Usage Id="System.Threading.Channels" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Threading.Overlapped" Version="4.0.1" />
     <Usage Id="System.Threading.Overlapped" Version="4.3.0" />
     <Usage Id="System.Threading.Tasks" Version="4.0.11" />
@@ -700,9 +813,11 @@
     <Usage Id="System.Threading.Tasks.Dataflow" Version="4.5.24" />
     <Usage Id="System.Threading.Tasks.Dataflow" Version="4.6.0" />
     <Usage Id="System.Threading.Tasks.Dataflow" Version="4.7.0" />
+    <Usage Id="System.Threading.Tasks.Dataflow" Version="4.9.0" IsDirectDependency="true" />
     <Usage Id="System.Threading.Tasks.Extensions" Version="4.0.0" />
     <Usage Id="System.Threading.Tasks.Extensions" Version="4.3.0" />
     <Usage Id="System.Threading.Tasks.Extensions" Version="4.5.0" />
+    <Usage Id="System.Threading.Tasks.Extensions" Version="4.5.1" IsDirectDependency="true" />
     <Usage Id="System.Threading.Tasks.Parallel" Version="4.0.1" />
     <Usage Id="System.Threading.Tasks.Parallel" Version="4.3.0" />
     <Usage Id="System.Threading.Thread" Version="4.0.0" />
@@ -713,6 +828,7 @@
     <Usage Id="System.Threading.Timer" Version="4.3.0" />
     <Usage Id="System.ValueTuple" Version="4.3.0" />
     <Usage Id="System.ValueTuple" Version="4.4.0" />
+    <Usage Id="System.ValueTuple" Version="4.5.0" IsDirectDependency="true" />
     <Usage Id="System.Xml.ReaderWriter" Version="4.0.11" />
     <Usage Id="System.Xml.ReaderWriter" Version="4.3.0" />
     <Usage Id="System.Xml.XDocument" Version="4.0.11" />
