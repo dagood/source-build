@@ -121,11 +121,13 @@ It's difficult to validate that a PR won't break downstream repos. This problem
 is shared by source-build and the Microsoft build. "Speculative builds" have
 been proposed to try to help with this, but would be very difficult to implement
 in the Microsoft build. It may be more reasonable in the context of
-source-build: all builds happen on a single machine.
+source-build: all builds happen on a single machine, so the problem is focused
+on figuring out a build graph rather than organizing dozens of machines in a
+build lab and flowing bits across a network.
 
-This is also necessary in source-build to validate advanced scenarios: by making
-a PR, is it still possible to run a bootstrap build of the .NET Core SDK? Can
-.NET Core SDK version N be built using SDK N-1?
+This is also necessary in source-build to validate several distro maintenance
+scenarios: by making a PR, is it still possible to run a bootstrap build of the
+.NET Core SDK? Can .NET Core SDK version N be built using SDK N-1?
 
 This can be developed in parallel to other efforts.
 
