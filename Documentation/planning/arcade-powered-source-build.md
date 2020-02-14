@@ -16,8 +16,8 @@ process is driven by two major goals:
      other build failure, rather than fixed by source-build maintainers days
      after the fact using patches.
 
-   * Decisions about rebuilding the SDK close to release day can more easily
-     take into account source-build status.
+   * Decisions about rebuilding the SDK close to release day don't need to
+     consider source-build status and respin time as external factors.
 
    * Rebuilding the SDK close to a release day doesn't cause setbacks to
      source-build maintainers by throwing away manual build uptake work.
