@@ -8,9 +8,23 @@ process is driven by two major goals:
    artifacts include validated, ship-ready source-build outputs, in addition to
    the Microsoft build outputs.
 
-   * If we treat the source-build outputs with the same care and criticality as
-     the Microsoft build outputs, we eliminate the delay between Microsoft build
-     availability and source-build tarball availability.
+   * This has two core benefits over the current situation: we know immediately
+     whether an SDK can be source-built cleanly, and the status is as visible as
+     an SDK build failure.
+
+   * Breaks in source-build can be fixed immediately by repo owners, just as any
+     other build failure, rather than fixed by source-build maintainers days
+     after the fact using patches.
+
+   * Decisions about rebuilding the SDK close to release day can more easily
+     take into account source-build status.
+
+   * Rebuilding the SDK close to a release day doesn't cause setbacks to
+     source-build maintainers by throwing away manual build uptake work.
+
+   * This eliminates the delay between Microsoft build completion and
+     source-build tarball availability, as long as we treat a source-build
+     failure as seriously as a Microsoft build failure.
 
 2. PR validation. Every repo involved in source-build validates
    source-buildability in its PR validation build.
@@ -25,15 +39,18 @@ and the vision.
 ## Starting point: official build
 
 The output of source-build is a set of tarballs that can be used to build the
-.NET Core SDK from source. We can add the current behavior of source-build to
+.NET Core SDK from source. We can move the current behavior of source-build to
 the Core-SDK official build. That is, Core-SDK clones all constituent repos,
 applies patches, builds each repo using customized build commands, and produces
 the source-build tarballs as artifacts.
 
-The gap here is build performance. It is simply too slow (> 2hrs) to build all
-constituent repos within one official build. It needs to be fast enough that it
-is reasonable for the entire official build to be rejected when the source-build
-fails.
+This immediately makes the dotnet/source-build repo unnecessary: it only held
+the source-build orchestration behavior.
+
+This needs more work to meet our goals due to build performance. It is simply
+too slow (> 2hrs) to build all constituent repos within one official build. It
+needs to be fast enough that it is reasonable for the entire official build to
+be rejected when the source-build fails.
 
 > Note: practically, the source-build official build should run in an
 > independent build pipeline at first: the long build time would interfere with
@@ -45,7 +62,8 @@ We can start here by adding extra jobs that run the standard source-build
 command and arguments. This is a simple step to confirm the build isn't
 fundamentally broken.
 
-There are many gaps:
+This needs more work to meet our goals for many reasons:
+
 * Prebuilt dependency usage isn't tracked, because all dependencies are
   downloaded as non-source-built prebuilts.
 * Source-build behavior may not work with source-built upstreams.
@@ -66,17 +84,25 @@ source-built intermediates, and Core-SDK should consume them. We should choose a
 leaf in the source-build dependency graph, say, SourceLink. When Core-SDK is
 looking at the build graph to determine which repos to build, instead of
 building SourceLink, it should restore the SourceLink intermediate artifact.
-
 Once we have this flow working, the functionality should be integrated into
-Arcade SDK for easy onboarding. Then, working from the bottom (leaves) upward
-(towards Core-SDK), more repos should consume and produce source-built
-intermediates in their official builds. When this completes, each repo only
-needs to build itself.
+Arcade SDK for easy onboarding.
+
+Then, working from the bottom (leaves) upward (towards Core-SDK), more repos
+should consume and produce source-built intermediates in their official builds.
+When this completes, each repo only needs to build itself.
+
+It is possible to instead only implement official source-build in a handful of
+repos. This would segment the build into multi-repo chunks. Each chunk owner
+repo would be responsible for building all upstreams that aren't in another
+chunk. Every chunk always needs to be coherent, to ensure that all upstream
+repos have source-built intermediates available. This means establishing
+stricter "coherent parent dependencies" in the Microsoft build to match
+source-build. This will slow down dependency uptake in some cases.
 
 > Note: some constituent repos aren't maintained by Microsoft, so it isn't
 > feasible to add them to this flow. We could fork them and set up an official
-> source-build. If it builds quickly, however, it might be better to simply
-> rebuild them whenever the outputs are needed.
+> source-build. If a repo builds quickly, however, it might be better to simply
+> rebuild it whenever the outputs are needed.
 
 ### Getting into Arcade
 The initial plan to run source-build in Core-SDK doesn't assume any changes to
@@ -100,7 +126,14 @@ This can be developed in parallel to other efforts.
 
 ## End result
 
+When all of this is working, the official Microsoft build of the .NET Core SDK
+also produces tarballs that distro maintainers can use to build it from source.
+Contributors in each repo use checks in PR validation to verify each change is
+compatible with source-build requirements, and if validation runs into a
+problem, they are able to reproduce the build locally using an Arcade build
+command.
 
+---
 
 ## Q&A
 
