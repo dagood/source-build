@@ -92,17 +92,22 @@ should consume and produce source-built intermediates in their official builds.
 When this completes, each repo only needs to build itself.
 
 It is possible to instead only implement official source-build in a handful of
-repos. This would segment the build into multi-repo chunks. Each chunk owner
-repo would be responsible for building all upstreams that aren't in another
-chunk. Every chunk always needs to be coherent, to ensure that all upstream
-repos have source-built intermediates available. This means establishing
-stricter "coherent parent dependencies" in the Microsoft build to match
-source-build. This will slow down dependency uptake in some cases.
+repos. This segments the build into chunks. Each chunk has one "owner" repo,
+where all repos in the chunk are upstream from the owner. The owner repo would
+be responsible for building all repos in the chunk and uploading the
+intermediates from each one. Each chunk needs to always be internally coherent,
+to ensure all repos that end up in the SDK have source-built intermediates
+available. This requires establishing stricter coherency in the Microsoft build
+to match source-build, slowing down dependency uptake in some cases.
+
+I don't expect onboarding to be very difficult once the functionality is in
+Arcade, so I think we should avoid the chunk approach. It may also be infeasible
+to require the Microsoft build to be more coherent.
 
 > Note: some constituent repos aren't maintained by Microsoft, so it isn't
-> feasible to add them to this flow. We could fork them and set up an official
-> source-build. If a repo builds quickly, however, it might be better to simply
-> rebuild it whenever the outputs are needed.
+> feasible to add them directly to this flow. We could fork them and set up a
+> build just for source-build intermediates. If a repo builds quickly, however,
+> it might be better to simply rebuild it whenever the outputs are needed.
 
 ### Getting into Arcade
 The initial plan to run source-build in Core-SDK doesn't assume any changes to
