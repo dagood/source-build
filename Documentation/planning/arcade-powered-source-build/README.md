@@ -56,6 +56,8 @@ be rejected when the source-build fails.
 > independent build pipeline at first: the long build time would interfere with
 > other .NET 5 work if integrated directly.
 
+For more info, see [source-build-in-pipeline.md].
+
 ## Starting point: PR validation
 
 We can start here by adding extra jobs that run the standard source-build
@@ -70,6 +72,8 @@ This needs more work to meet our goals for many reasons:
 * The artifacts built by the repo may not work downstream.
 * Advanced build flows aren't checked, such as source-build bootstrap or using
   an N-1 SDK.
+
+For more info, see [source-build-in-pipeline.md].
 
 ## Incremental progress
 
@@ -89,20 +93,12 @@ the functionality should be integrated into Arcade SDK for easy onboarding.
 
 Then, working from the bottom (leaves) upward (towards Core-SDK), more repos
 should consume and produce source-built intermediates in their official builds.
-When this completes, each repo only needs to build itself.
+When this completes, each repo only needs to build itself. See
+[incremental-official.md] for more details about this process.
 
 It is possible to instead only implement official source-build in a handful of
-repos. This segments the build into chunks. Each chunk has one "owner" repo,
-where all repos in the chunk are upstream from the owner. The owner repo would
-be responsible for building all repos in the chunk and uploading the
-intermediates from each one. Each chunk needs to always be internally coherent,
-to ensure all repos that end up in the SDK have source-built intermediates
-available. This requires establishing stricter coherency in the Microsoft build
-to match source-build, slowing down dependency uptake in some cases.
-
-I don't expect onboarding to be very difficult once the functionality is in
-Arcade, so I think we should avoid the chunk approach. It may also be infeasible
-to require the Microsoft build to be more coherent.
+repos. This segments the build into chunks, which must be coherent. This idea is
+discussed in [incremental-official-chunked.md], and is not recommended.
 
 > Note: some constituent repos aren't maintained by Microsoft, so it isn't
 > feasible to add them directly to this flow. We could fork them and set up a
@@ -115,6 +111,8 @@ Arcade: this should be possible due to the extension points that already exist
 in the Arcade SDK. Once we have that, it will be clearer what logic is missing,
 and how to add it. This allows us to migrate source-build logic incrementally
 and in parallel with other work.
+
+For more info, see [in-arcade.md].
 
 ### The speculative SDK
 It's difficult to validate that a PR won't break downstream repos. This problem
@@ -129,7 +127,8 @@ This is also necessary in source-build to validate several distro maintenance
 scenarios: by making a PR, is it still possible to run a bootstrap build of the
 .NET Core SDK? Can .NET Core SDK version N be built using SDK N-1?
 
-This can be developed in parallel to other efforts.
+This can be developed in parallel to other efforts. See [speculative-build.md]
+for more info about speculative builds.
 
 ## End result
 
@@ -145,21 +144,12 @@ command.
 ## Q&A
 
 ### Q: How do we patch without an orchestration-focused repo?
-In the best world, patches are no longer considered as a solution to build or
-functionality problems. If source-build doesn't work, we fix it and respin the
-official build, because a source-build issue is treated the same as an issue
-with the Microsoft-built .NET Core SDK.
+A: We shouldn't! But if we have to, use a forked branch. See
+[patching.md](patching.md).
 
-However, there are reasons this may not be feasible. In an intermediate state,
-the source-build performance may be slow enough that it must be built and fixed
-up outside the Microsoft official build. But even if that's fixed, there may be
-a case where an issue with source-build is discovered very late, and we can
-identify a patch that fixes it but can't afford to respin the Microsoft build.
 
-In these cases, we should create a branch in the affected repo based on the
-current commit that includes the patch as a Git commit. This avoids a
-specialized "patch file" workflow, and it is business as usual to merge the
-hotfix into the branch for the next build.
-
-This implies that Darc/Maestro++/BAR must be able to flow builds from the new
-branch through official builds using a "source-build patch" channel.
+[in-arcade.md]: in-arcade.md
+[incremental-official-chunked.md]: incremental-official-chunked.md
+[incremental-official.md]: incremental-official.md
+[source-build-in-pipeline.md]: source-build-in-pipeline.md
+[speculative-build.md]: speculative-build.md
