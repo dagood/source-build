@@ -46,10 +46,14 @@ afterwards with source-built intermediates. Then, source-build sets up
 RestoreSources, a Package Version Props, a blob root, and any repo-specific
 special requirements.
 
-At this point in the build, we also have all we need to create a
-source-buildable tarball. We should allow one to be created as early as possible
-and cancel the rest of the build, as the user may be a distro maintainer who
-doesn't actually want to build the repo right now.
+At this point in the build, we should also have all we need to create a
+source-buildable tarball. We should aim to allow the user to create it as early
+as possible and cancel the rest of the build, as they may be a distro maintainer
+who doesn't actually want to build the repo right now. Unfortunately, there are
+some known issues blocking us from creating a source-buildable tarball without
+building the product first, tracked by
+[source-build#831](https://github.com/dotnet/source-build/issues/831). Until we
+find solutions, tarball creation must be done in Publish instead.
 
 ### Restore
 
@@ -71,6 +75,13 @@ repos use this target so care is needed to make sure this doesn't crash.
 Creating an intermediate nupkg involves gathering together all shipped artifacts
 (nupkgs and tarballs) into a nupkg. The nupkg the needs to be uploaded to the
 build pipeline along with a manifest to indicate to Arcade how to publish it.
+
+We should also ensure here that no prebuilts were used. This is a validation
+step, however it's essential for source-build health, and quick to check. The
+reason to do this during Publish is that there is no Test phase during a
+source-build and we don't know for sure whether any extra prebuilts were
+restored until the entire build completes. (It's not guaranteed that all
+downloading happens during the Arcade SDK's Restore phase.)
 
 ## Supporting a source-built SDK
 

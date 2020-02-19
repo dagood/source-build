@@ -21,8 +21,16 @@ contains all the nupkgs and other artifacts produced by the build.
   * `dotnet-runtime-5.0.0-alpha.1.12345-linux-x64.tar.gz`
   * ...
 
+The version number here is the same as the official build's version number. This
+makes the official build produce consistent artifacts and prevents overlap in
+the same way it's prevented in existing official builds. The nupkg should always
+have an unstable version because it's a transport package, helping to avoid
+complicated feed management allowing for stabilized rebuilds.
+
 Official builds publish the monster nupkg, and downstream repos restore the
-monster nupkg then use the contents.
+monster nupkg then use the contents. Note that an official build must produce
+its Microsoft build outputs *and* the source-build monster nupkg, or it fails.
+This ensures downstream repos have access to the source-built intermediates.
 
 ## Too large?
 

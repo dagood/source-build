@@ -12,9 +12,9 @@ process is driven by two major goals:
      whether an SDK can be source-built cleanly, and the status is as visible as
      an SDK build failure.
 
-   * Breaks in source-build can be fixed immediately by repo owners, just as any
-     other build failure, rather than fixed by source-build maintainers days
-     after the fact using patches.
+   * Breaks in source-build can be detected and fixed immediately by repo
+     owners, just as any other build failure, rather than fixed by source-build
+     maintainers weeks to months after the fact using patches.
 
    * Decisions about rebuilding the SDK close to release day don't need to
      consider source-build status and respin time as external factors.
