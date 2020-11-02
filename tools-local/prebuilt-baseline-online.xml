@@ -76,7 +76,6 @@
     <Usage Id="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" Version="3.8.0-3.20425.2" IsDirectDependency="true" />
     <Usage Id="Microsoft.CSharp" Version="4.0.1" IsDirectDependency="true" />
     <Usage Id="Microsoft.CSharp" Version="4.3.0" IsDirectDependency="true" />
-    <Usage Id="Microsoft.CSharp" Version="4.4.1" />
     <Usage Id="Microsoft.Diagnostics.Tracing.EventSource.Redist" Version="2.1.0" />
     <Usage Id="Microsoft.Docker.Sdk" Version="1.1.0" />
     <Usage Id="Microsoft.DotNet.Arcade.Sdk" Version="5.0.0-beta.20426.4" />
