@@ -1,0 +1,36 @@
+From b6799bfa999b668ff98fe280ba30d63b785a9850 Mon Sep 17 00:00:00 2001
+From: Davis Goodin <dagood@microsoft.com>
+Date: Tue, 17 Nov 2020 18:04:29 -0600
+Subject: [PATCH] Use more source-built versions
+
+This allows downstream repos to avoid prebuilts without overriding
+these package versions themselves. Some of these packages contain
+references to other packages that apply in specific TFMs, so they don't
+show up as a prebuilt in dotnet/msbuild itself, but do in downstream
+repos.
+---
+ eng/Packages.props | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/eng/Packages.props b/eng/Packages.props
+index 40b22473..ce9d70a7 100644
+--- a/eng/Packages.props
++++ b/eng/Packages.props
+@@ -40,10 +40,10 @@
+     <PackageReference Update="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+     <PackageReference Update="System.Runtime.Loader" Version="4.0.0" />
+     <PackageReference Update="System.Runtime.Serialization.Primitives" Version="4.1.1" />
+-    <PackageReference Update="System.Security.Cryptography.Pkcs" Version="4.7.0" />
+-    <PackageReference Update="System.Security.Cryptography.Xml" Version="4.7.0" />
+-    <PackageReference Update="System.Security.Permissions" Version="4.7.0" />
+-    <PackageReference Update="System.Security.Principal.Windows" Version="4.7.0" />
++    <PackageReference Update="System.Security.Cryptography.Pkcs" Version="$(SystemSecurityCryptographyPkcsPackageVersion)" />
++    <PackageReference Update="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
++    <PackageReference Update="System.Security.Permissions" Version="$(SystemSecurityPermissionsPackageVersion)" />
++    <PackageReference Update="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
+     <PackageReference Update="System.Text.Encoding.CodePages" Version="4.0.1" />
+     <PackageReference Update="System.Text.Json" Version="4.7.0" />
+     <PackageReference Update="System.Threading.Tasks.Dataflow" Version="4.9.0" />
+-- 
+2.25.2
+
