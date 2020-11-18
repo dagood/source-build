@@ -27,12 +27,21 @@
     <GlobalJsonFile>$(ProjectDirectory)global.json</GlobalJsonFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackProjects Include="$(ProjectDirectory)src/NuGet/Microsoft.NETCore.Compilers/Microsoft.NETCore.Compilers.Package.csproj" />
-    <PackProjects Include="$(ProjectDirectory)src/NuGet/Microsoft.Net.Compilers.Toolset/Microsoft.Net.Compilers.Toolset.Package.csproj" />
-    <PackProjects Include="$(ProjectDirectory)src/Workspaces/Core/Portable/Microsoft.CodeAnalysis.Workspaces.csproj" />
-    <PackProjects Include="$(ProjectDirectory)src/Workspaces/CSharp/Portable/Microsoft.CodeAnalysis.CSharp.Workspaces.csproj" />
-  </ItemGroup>
+  <Target Name="UpdateNETCoreApp31ToCurrent"
+          BeforeTargets="Build"
+          Inputs="$(MSBuildProjectFullPath)"
+          Outputs="$(RepoCompletedSemaphorePath)UpdateNETCoreApp31ToCurrent.complete">
+    <Exec Command="
+      find &quot;$(ProjectDirectory)&quot; \( \
+        -iname '*.csproj' -or \
+        -iname '*.proj' -or \
+        -iname '*.props' -or \
+        -iname '*.targets' -or \
+        -iname '*.vbproj' \) \
+        -exec sed -e 's/netcoreapp3.1/net5.0/g' -i {} \;" />
+
+    <WriteLinesToFile File="$(RepoCompletedSemaphorePath)UpdateNETCoreApp31ToCurrent.complete" Overwrite="true" />
+  </Target>
 
   <ItemGroup>
     <RepositoryReference Include="arcade" />
